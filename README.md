@@ -13,7 +13,7 @@
 | Team Member | GitHub ID | Registered Email | Primary Contributions & Track |
 |---|---|---|---|
 | **M Anish Reddy** | [@NeverCodedL](https://github.com/NeverCodedL) | `mmk.anish19@gmail.com` | **Team Lead & Classification Track**<br>• Project formulation, objective definition, and data ingestion pipeline<br>• Preprocessing Phase 1 (Null validation, identifier removal, data types)<br>• Exploratory Data Analysis: Visualizations 1–4 (Target imbalance, Product Type distribution, Temperature distributions, Torque vs Rotational Speed)<br>• Classification Track: Model training (Logistic Regression, Decision Tree, Random Forest, Gradient Boosting, Dummy Baseline), confusion matrices, and ROC-AUC evaluation |
-| **Maneesh Janjam** | [@maneshhack](https://github.com/maneshhack) | `maneeshjanjam9@gmail.com` | **Regression Track Specialist**<br>• Formulation of Continuous Tool Wear prediction (`Tool wear [min]`)<br>• Implementation of all 10 Regression Models (Linear, Ridge, Lasso, ElasticNet, Polynomial, Decision Tree, Random Forest, Gradient Boosting, SVR, KNN)<br>• Comprehensive Regression Comparison Table (R², RMSE, MAE)<br>• Standalone dedicated regression notebook (`regression.ipynb`) with individual predicted vs. actual scatter plots for all 10 models<br>• 5-Fold Cross-Validation, hyperparameter tuning, and residual analysis |
+| **Maneesh Janjam** | [@maneshhack](https://github.com/maneshhack) | `maneeshjanjam9@gmail.com` | **Regression Track Specialist**<br>• Formulation of Machine Thermal & Failure Regression modeling<br>• Implementation of all 10 Regression Models (Linear, Ridge, Lasso, ElasticNet, Polynomial, Decision Tree, Random Forest, Gradient Boosting, SVR, KNN)<br>• Comprehensive Regression Comparison Table (R², RMSE, MAE)<br>• Dedicated high-accuracy regression notebook (`regression_high_accuracy.ipynb`) with individual predicted vs. actual scatter plots for all 10 models<br>• 5-Fold Cross-Validation, hyperparameter tuning, and residual analysis |
 | **Tarun Manikanta** | [@tarunmanikanta5706](https://github.com/tarunmanikanta5706) | `tarunmanikanta8442@gmail.com` | **EDA, Preprocessing & Feature Engineering**<br>• Exploratory Data Analysis: Visualizations 5–9 (Pearson correlation matrix, failure mode breakdown, sensor boxplot outlier detection, operational envelopes, and Tool Wear vs Temp Difference zones)<br>• Preprocessing Phase 2 (Robust scaling, One-Hot Encoding via `ColumnTransformer`)<br>• Domain-specific Feature Engineering (`Temp_Diff`, `Power_kW`, `Tool_Wear_Strain`)<br>• Review 1 evaluation presentation (`Review1_Presentation.pptx`) and documentation |
 
 ---
@@ -113,7 +113,8 @@ Target: `Machine failure` (Binary 0 / 1, heavily imbalanced 96.6% vs 3.4%)
 .
 ├── ai4i2020.csv                          # Primary dataset (10,000 records)
 ├── main.ipynb                            # Complete Review 1 notebook (EDA, 10 Regressors, 5 Classifiers)
-├── regression.ipynb                      # Dedicated regression notebook with individual model plots
+├── regression_high_accuracy.ipynb        # High-accuracy regression notebook (R² >= 0.80–0.82 thermal modeling)
+├── figures/                              # Rendered high-resolution benchmark plots
 ├── Review1_Presentation.pptx             # Professional 31-slide evaluation presentation
 ├── 23CSE301_ML_26_27_Capstone_Guidelines.pdf # Official course capstone guidelines
 ├── requirements.txt                      # Project dependency specification
@@ -141,8 +142,8 @@ pip install -r requirements.txt
 ### 3. Launch Notebooks
 ```bash
 jupyter notebook main.ipynb
-# or
-jupyter notebook regression.ipynb
+# or dedicated regression notebook:
+jupyter notebook regression_high_accuracy.ipynb
 ```
 
 ---

@@ -36,6 +36,7 @@ This project builds an **AI-Based Predictive Maintenance System** using the
 ```
 AI-Industrial-Machine-Failure-Prediction/
 ├── README.md                       ← You are here
+├── requirements.txt                ← Canonical unified dependencies
 ├── .gitignore
 ├── 23CSE301_ML_26_27_Capstone_Guidelines.pdf
 │
@@ -54,13 +55,21 @@ AI-Industrial-Machine-Failure-Prediction/
     ├── data/
     │   └── ai4i2020.csv            ← Canonical dataset for Review 2
     ├── notebooks/
-    │   └── classification/
-    │       ├── classification.ipynb    ← Classification Part B (Day 1: RF, AdaBoost, GB)
-    │       └── eval_utils.py           ← Shared evaluation helpers
+    │   ├── classification/
+    │   │   ├── classification.ipynb    ← Classification Part B (Day 1: RF, AdaBoost, GB)
+    │   │   └── eval_utils.py           ← Shared evaluation helpers
+    │   └── clustering/
+    │       ├── clustering.ipynb        ← Clustering Track (Day 1: K-Means scaffold)
+    │       └── clustering_utils.py     ← Shared clustering helpers
     ├── src/
-    │   └── classification/
-    │       └── eval_utils.py           ← Source copy of evaluation helpers
-    ├── figures/                    ← Review 2 generated plots
+    │   ├── classification/
+    │   │   └── eval_utils.py           ← Source copy of evaluation helpers
+    │   └── clustering/
+    │       ├── __init__.py
+    │       └── clustering_utils.py     ← Source copy of clustering helpers
+    ├── figures/
+    │   ├── classification/         ← Review 2 classification plots
+    │   └── clustering/             ← Review 2 clustering plots
     ├── models/                     ← Saved model files (.pkl)
     ├── docs/                       ← Integration documentation
     └── app/                        ← GUI bonus (optional — pending)
@@ -70,18 +79,27 @@ AI-Industrial-Machine-Failure-Prediction/
 
 ## Quick Start
 
+### Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
 ### Review 1
 ```bash
 cd Review1
-pip install -r requirements.txt
 jupyter notebook main.ipynb
 ```
 
-### Review 2 (Classification — current)
+### Review 2
+
 ```bash
 cd Review2
-pip install -r requirements.txt
+
+# Classification Track (Part B Day 1)
 jupyter notebook notebooks/classification/classification.ipynb
+
+# Clustering Track (K-Means Day 1)
+jupyter notebook notebooks/clustering/clustering.ipynb
 ```
 
 ---
@@ -94,9 +112,9 @@ jupyter notebook notebooks/classification/classification.ipynb
 | Preprocessing & Feature Engineering | ✅ Complete | — |
 | Regression Track (10 models) | ✅ Complete | — |
 | Classification Part A (5 models) | ✅ Complete | — |
-| Classification Part B (5 models) | — | 🔄 In Progress |
-| K-Means Clustering | — | ⏳ Pending |
-| Hierarchical Clustering | — | ⏳ Pending |
+| Classification Part B (5 models) | — | 🔄 In Progress (Day 1: RF, AdaBoost, GB) |
+| K-Means Clustering | — | 🔄 In Progress (Day 1: Scaffold, scaling, k=3) |
+| Hierarchical Clustering | — | ⏳ Pending (Day 3 milestone) |
 | Pipeline Integration & Quality | — | 🔄 In Progress |
 | Presentation & Viva | ✅ Done | ⏳ Pending |
 

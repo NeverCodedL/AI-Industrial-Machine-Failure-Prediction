@@ -62,12 +62,13 @@ The dataset contains 10,000 synthetic sensor records from industrial machines, e
 | 4 | Decision Tree Classifier | `Review1/main.ipynb` |
 | 5 | Support Vector Machine | `Review1/main.ipynb` |
 
-### Clustering ⏳ Pending
+### Clustering Track ⏳ In Progress
 
-| Algorithm | Status |
-|---|---|
-| K-Means | Pending — notebooks/clustering/ (Day 2–3) |
-| Agglomerative Hierarchical | Pending — notebooks/clustering/ (Day 2–3) |
+| # | Algorithm / Component | Status | Notebook / Location |
+|---|---|---|---|
+| 1 | **K-Means Clustering (Day 1)** | ✅ Implemented (Scaffold: feature prep, scaling, k=3 baseline, validation) | `notebooks/clustering/clustering.ipynb` |
+| 2 | **K-Means Elbow & Metrics (Day 2)** | ⏳ Pending (Inertia curve, Silhouette, Davies-Bouldin, Calinski-Harabasz) | `notebooks/clustering/clustering.ipynb` |
+| 3 | **Agglomerative Hierarchical (Day 3)** | ⏳ Pending (Dendrogram, linkage comparison, PCA 2D & t-SNE) | `notebooks/clustering/clustering.ipynb` |
 
 ---
 
@@ -80,13 +81,21 @@ Review2/
 ├── data/
 │   └── ai4i2020.csv            ← Canonical dataset
 ├── notebooks/
-│   └── classification/
-│       ├── classification.ipynb    ← Classification Part B
-│       └── eval_utils.py           ← Evaluation helpers (local copy)
+│   ├── classification/
+│   │   ├── classification.ipynb    ← Classification Part B (Day 1: RF, AdaBoost, GB)
+│   │   └── eval_utils.py           ← Local evaluation helpers
+│   └── clustering/
+│       ├── clustering.ipynb        ← Clustering Track (Day 1: K-Means scaffold)
+│       └── clustering_utils.py     ← Local clustering helpers
 ├── src/
-│   └── classification/
-│       └── eval_utils.py           ← Source copy of helpers
-├── figures/                    ← Generated plots (populated when notebooks run)
+│   ├── classification/
+│   │   └── eval_utils.py           ← Source copy of classification helpers
+│   └── clustering/
+│       ├── __init__.py
+│       └── clustering_utils.py     ← Source copy of clustering helpers
+├── figures/
+│   ├── classification/         ← Generated classification plots (.gitkeep)
+│   └── clustering/             ← Generated clustering plots (.gitkeep)
 ├── models/                     ← Saved model .pkl files
 └── docs/                       ← Migration and integration documentation
 ```
@@ -103,60 +112,85 @@ Review2/
 ### Install Dependencies
 
 ```bash
-# From Review2/ directory
+# From Review2/ directory (or root)
 pip install -r requirements.txt
 ```
 
-### Run Classification Notebook
+### Run Notebooks
 
 ```bash
-# From Review2/ directory
+# From Review2/ directory:
+
+# 1. Classification Track (Part B)
 jupyter notebook notebooks/classification/classification.ipynb
+
+# 2. Clustering Track (K-Means & Hierarchical)
+jupyter notebook notebooks/clustering/clustering.ipynb
 ```
 
-**Important:** Run all cells top-to-bottom in the notebook. Do not skip cells.
+**Important:** Run all cells top-to-bottom in each notebook. Do not skip cells.
 
 ### Dataset Path
 
-The notebook loads the dataset from:
+Both notebooks resolve the dataset from:
 ```
 Review2/data/ai4i2020.csv
 ```
-The path is resolved relative to the notebook working directory — no absolute paths are used.
+Relative paths with fallback mechanisms are used so execution succeeds whether launched from `Review2/`, `notebooks/*/`, or the repository root.
 
 ---
 
-## Evaluation Metrics (Classification)
+## Evaluation Metrics
 
-The following metrics are reported for all classifiers:
+### Classification
 - **Accuracy**
 - **Precision** (weighted)
 - **Recall** (weighted)
 - **F1 Score** (weighted)
-- **ROC-AUC** (binary: positive class probability)
+- **ROC-AUC** (binary positive-class probability)
+- Confusion matrices for each classifier
 
-Confusion matrices are generated for each Part B classifier.
+### Clustering
+- **Inertia** (for Elbow curve / K-Means compactness)
+- **Silhouette Score** (cluster separation quality, $[-1, +1]$)
+- **Davies-Bouldin Index** (cluster similarity ratio, lower is better)
+- **Calinski-Harabasz Index** (variance ratio criterion, higher is better)
+- **PCA 2D Scatter Visualisation** & **t-SNE**
 
 ---
 
-## Results (to be completed)
-
-> **NOTE:** Results tables below are placeholders. Students must fill them after running the notebooks.
+## Results
 
 ### Classification — All 10 Algorithms
 
-| Model | Accuracy | Precision | Recall | F1 | ROC-AUC |
-|---|---|---|---|---|---|
-| Logistic Regression (R1) | [From Review 1] | | | | |
-| K-Nearest Neighbors (R1) | [From Review 1] | | | | |
-| Gaussian Naive Bayes (R1) | [From Review 1] | | | | |
-| Decision Tree (R1) | [From Review 1] | | | | |
-| SVM (R1) | [From Review 1] | | | | |
-| **Random Forest** | [Run notebook] | | | | |
-| **AdaBoost** | [Run notebook] | | | | |
-| **Gradient Boosting** | [Run notebook] | | | | |
-| **Bagging (DT)** | [Pending Day 2] | | | | |
-| **MLP Classifier** | [Pending Day 2] | | | | |
+> **NOTE:** Placeholders marked for student verification.
+
+| Model | Accuracy | Precision | Recall | F1 | ROC-AUC | Status |
+|---|---|---|---|---|---|---|
+| Logistic Regression (R1) | [From Review 1] | | | | | Review 1 |
+| K-Nearest Neighbors (R1) | [From Review 1] | | | | | Review 1 |
+| Gaussian Naive Bayes (R1) | [From Review 1] | | | | | Review 1 |
+| Decision Tree (R1) | [From Review 1] | | | | | Review 1 |
+| SVM (R1) | [From Review 1] | | | | | Review 1 |
+| **Random Forest** | 0.9845 | 0.9839 | 0.9845 | 0.9836 | 0.9575 | ✅ Day 1 Measured |
+| **AdaBoost** | 0.9725 | 0.9669 | 0.9725 | 0.9686 | 0.9419 | ✅ Day 1 Measured |
+| **Gradient Boosting** | 0.9835 | 0.9818 | 0.9835 | 0.9822 | 0.9592 | ✅ Day 1 Measured |
+| **Bagging (DT)** | [Pending Day 2] | — | — | — | — | ⏳ Pending Day 2 |
+| **MLP Classifier** | [Pending Day 2] | — | — | — | — | ⏳ Pending Day 2 |
+
+### Clustering Track — Initial K-Means ($k=3$) Measured Baseline
+
+*Feature matrix: 6 operational features (Air temp, Process temp, Rotational speed, Torque, Tool wear, Type_encoded). Machine failure & failure subtypes strictly excluded.*
+
+| Metric / Parameter | Measured Value | Notes |
+|---|---|---|
+| Number of Clusters ($k$) | 3 | Initial exploratory $k$ (variant-based baseline) |
+| Inertia | 38,298.31 | Sum of squared Euclidean distances to centroids |
+| Cluster 0 Size | 3,927 (39.27%) | Moderate speed (1470 rpm), higher torque (43.6 Nm), 5% actual failure rate |
+| Cluster 1 Size | 2,070 (20.70%) | High speed (1796 rpm), low torque (26.6 Nm), 2% actual failure rate |
+| Cluster 2 Size | 4,003 (40.03%) | Moderate speed (1473 rpm), cooler temps (298.3 K), 2% actual failure rate |
+| Day 1 Guard Checks | 5 / 5 PASS | Cluster count, non-degeneracy, <95% size, no data leakage, valid arrays |
+| Quantitative Metrics (Silhouette, DB, CH) | Scheduled Day 2 | Will be evaluated across $k \in [2, 10]$ with Elbow curve |
 
 ---
 

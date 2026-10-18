@@ -47,3 +47,17 @@ create_ppt.py
 .tools/
 .git_bin/
 mingit/
+
+# Review 2 — Generated model artifacts
+Review2/models/*.pkl
+
+# Review 2 — Executed notebook test outputs
+Review2/**/*_test_run.ipynb
+Review2/**/*_EXECUTED.ipynb
+
+# Workspace distribution folders (never commit these)
+Review2_Workspace/
+Person1_Day*/
+Person2_Day*/
+Person3_Day*/
+*.zip

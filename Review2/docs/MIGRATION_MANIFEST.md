@@ -82,8 +82,46 @@
 | `Person1_Day1/classification_EXECUTED.ipynb` | Test execution output — not for submission |
 | `Person1_Day2/` | Not yet authorised |
 | `Person1_Day3/` | Not yet authorised |
-| `Person2_*/` | Not yet authorised |
+| `Person2_Day1` | Integrated via feature branch `integrate-review2-clustering-components` |
+| `Person2_Day2/` | Not yet authorised (future milestone) |
+| `Person2_Day3/` | Not yet authorised (future milestone) |
 | `Person3_*/` | Not yet authorised |
+
+---
+
+## Person 2 Day 1 Integration
+
+### Authorised Files Integrated
+
+| Source (Handoff) | Canonical Destination | Notes / Path Changes |
+|---|---|---|
+| `Person2_Day1/kmeans_clustering.ipynb` | `Review2/notebooks/clustering/clustering.ipynb` | Standardised name to `clustering.ipynb`; data path resolved via `../../data/ai4i2020.csv` with robust fallback; imports modular `clustering_utils`; executed top-to-bottom |
+| Reusable functions | `Review2/src/clustering/clustering_utils.py` | Canonical modular utility: `validate_clustering`, `profile_clusters`, `compute_clustering_metrics`, `plot_cluster_scatter_2d` |
+| Reusable functions | `Review2/notebooks/clustering/clustering_utils.py` | Local copy alongside notebook for zero-configuration imports |
+| Package marker | `Review2/src/clustering/__init__.py` | Python package marker |
+| Figures directory | `Review2/figures/clustering/.gitkeep` | Destination for upcoming Day 3 PCA/t-SNE and Day 2 Elbow plots |
+| Dependencies | `requirements.txt` (root) | Canonical dependencies file at repository root per Capstone Guidelines Section 8 |
+
+### Files NOT Integrated (as authorised)
+
+| File | Reason |
+|---|---|
+| `Person2_Day1/HANDOFF.md` | Internal coordination doc only — not for GitHub |
+| `Person2_Day1/FILE_MANIFEST.md` | Internal coordination doc only — not for GitHub |
+| `Person2_Day1/VALIDATION_CHECKLIST.md` | Internal coordination doc only — verified via code |
+| `Person2_Day1/data/ai4i2020.csv` | Duplicate handoff dataset — canonical copy at `Review2/data/ai4i2020.csv` |
+| `Person2_Day1/kmeans_EXECUTED.ipynb` | Handoff test artifact — notebook cleanly re-executed and verified in canonical location |
+| `Person2_Day2/` | Future milestone (Elbow curve, Silhouette, DB, CH indices) |
+| `Person2_Day3/` | Future milestone (Hierarchical clustering, Dendrogram, PCA 2D & t-SNE) |
+
+### Execution Verification
+
+- **Status:** PASS
+- **Command:** `jupyter nbconvert --execute --to notebook --inplace notebooks/clustering/clustering.ipynb` (from `Review2/`)
+- **Result:** Executed successfully (code 0), 23,176 bytes written, all 5 validation checks passed.
+- **Inertia:** 38,298.31 (k=3)
+- **Cluster Sizes:** Cluster 0: 3927 (39.3%), Cluster 1: 2070 (20.7%), Cluster 2: 4003 (40.0%)
+
 
 ---
 

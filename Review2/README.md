@@ -62,12 +62,27 @@ The dataset contains 10,000 synthetic sensor records from industrial machines, e
 | 4 | Decision Tree Classifier | `Review1/main.ipynb` |
 | 5 | Support Vector Machine | `Review1/main.ipynb` |
 
-### Clustering ⏳ Pending
+### Clustering ⏳ In Progress
 
-| Algorithm | Status |
-|---|---|
-| K-Means | Pending — notebooks/clustering/ (Day 2–3) |
-| Agglomerative Hierarchical | Pending — notebooks/clustering/ (Day 2–3) |
+| Algorithm | Status | Notebook |
+|---|---|---|
+| K-Means | ⏳ Pending (Day 2–3) | `notebooks/clustering/` (to be added) |
+| Agglomerative Hierarchical | ✅ Day 1 scaffold integrated | `notebooks/clustering/hierarchical_clustering.ipynb` |
+
+**Day 1 Hierarchical Clustering — What is implemented:**
+- Feature preparation and scaling (consistent with K-Means feature set)
+- Agglomerative Clustering (Ward linkage) on the full 10,000-row dataset
+- Dendrogram on a documented 500-sample subset (computational necessity — explicitly noted)
+- Linkage comparison: Ward vs Average vs Complete (Silhouette, Davies-Bouldin, Calinski-Harabasz)
+- `cluster_utils.py` helper module (metric evaluation, PCA visualisation, t-SNE visualisation)
+- Dendrogram figure: `figures/clustering/dendrogram_ward.png`
+
+**Pending (Day 2–3):**
+- K-Means implementation and Elbow curve
+- Metrics across multiple k values
+- PCA 2D visualisation for each algorithm
+- t-SNE visualisation
+- Final comparison table (Hierarchical vs K-Means)
 
 ---
 
@@ -80,13 +95,20 @@ Review2/
 ├── data/
 │   └── ai4i2020.csv            ← Canonical dataset
 ├── notebooks/
-│   └── classification/
-│       ├── classification.ipynb    ← Classification Part B
-│       └── eval_utils.py           ← Evaluation helpers (local copy)
+│   ├── classification/
+│   │   ├── classification.ipynb    ← Classification Part B (RF, AdaBoost, GB; Bagging+MLP pending)
+│   │   └── eval_utils.py           ← Evaluation helpers (local copy)
+│   └── clustering/
+│       ├── hierarchical_clustering.ipynb  ← Hierarchical Clustering (Day 1 scaffold)
+│       └── cluster_utils.py               ← Clustering helpers (local copy)
 ├── src/
-│   └── classification/
-│       └── eval_utils.py           ← Source copy of helpers
-├── figures/                    ← Generated plots (populated when notebooks run)
+│   ├── classification/
+│   │   └── eval_utils.py           ← Source copy of classification helpers
+│   └── clustering/
+│       └── cluster_utils.py        ← Source copy of clustering helpers
+├── figures/
+│   └── clustering/
+│       └── dendrogram_ward.png     ← Ward linkage dendrogram (500-sample subset)
 ├── models/                     ← Saved model .pkl files
 └── docs/                       ← Migration and integration documentation
 ```
@@ -114,11 +136,18 @@ pip install -r requirements.txt
 jupyter notebook notebooks/classification/classification.ipynb
 ```
 
+### Run Clustering Notebook (Hierarchical — Day 1 Scaffold)
+
+```bash
+# From Review2/ directory
+jupyter notebook notebooks/clustering/hierarchical_clustering.ipynb
+```
+
 **Important:** Run all cells top-to-bottom in the notebook. Do not skip cells.
 
 ### Dataset Path
 
-The notebook loads the dataset from:
+The notebooks load the dataset from:
 ```
 Review2/data/ai4i2020.csv
 ```

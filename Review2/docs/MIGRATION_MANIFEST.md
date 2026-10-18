@@ -122,3 +122,51 @@ The `ai4i2020.csv` dataset exists in two locations after this migration:
 - `Review2/data/ai4i2020.csv` — used by Review 2 notebooks
 
 This intentional duplication ensures each review is self-contained and avoids cross-review path dependencies. Both files are identical (SHA verified). A future optimisation could use a symlink, but this is not recommended for GitHub compatibility.
+
+---
+
+## Person 3 Day 1 Integration — Hierarchical Clustering Scaffold
+
+### Source and Branch
+
+| Item | Value |
+|---|---|
+| Source workspace | `Person3_Day1/` (local handoff folder) |
+| Feature branch | `integrate-review2-clustering-day1-scaffold` |
+| Integration date | 2026-10-18 |
+
+### Files Integrated
+
+| Source (Person3_Day1) | Canonical Destination | Changes Made |
+|---|---|---|
+| `hierarchical_clustering.ipynb` | `Review2/notebooks/clustering/hierarchical_clustering.ipynb` | Data path corrected to `../../data/ai4i2020.csv`; figure save path corrected to `../../figures/clustering/`; Day/Person-specific title text removed; STUDENT TASK cells and academic content preserved |
+| `dendrogram_ward.png` | `Review2/figures/clustering/dendrogram_ward.png` | Copied as-is (executed output, correct content) |
+
+### New Files Created
+
+| Path | Purpose |
+|---|---|
+| `Review2/src/clustering/cluster_utils.py` | Reusable clustering helpers: metric evaluation, PCA 2D plot, t-SNE 2D plot |
+| `Review2/notebooks/clustering/cluster_utils.py` | Local copy of helpers (same pattern as `eval_utils.py` in classification) |
+
+### Files NOT Integrated
+
+| File | Reason |
+|---|---|
+| `Person3_Day1/HANDOFF.md` | Internal team coordination document only |
+| `Person3_Day1/FILE_MANIFEST.md` | Internal coordination document only |
+| `Person3_Day1/VALIDATION_CHECKLIST.md` | Internal coordination document only |
+| `Person3_Day1/data/ai4i2020.csv` | Handoff copy; canonical version already at `Review2/data/ai4i2020.csv` |
+| `Person3_Day1/hierarchical_EXECUTED.ipynb` | Test-execution output; not a submission deliverable |
+| `Person3_Day2/` | Not yet available |
+| `Person3_Day3/` | Not yet available — Day 3 will be the final notebook superseding this scaffold |
+
+### Integration Notes
+
+- The Day 1 notebook is a **scaffold** — student must run it, fill in [STUDENT TASK] observations, and decide on linkage method for Days 2 and 3.
+- The `hierarchical_EXECUTED.ipynb` from the handoff confirms all code cells execute without error (Python 3.14, scikit-learn, scipy, matplotlib). The integrated notebook has execution counts reset to null.
+- Data-leakage check confirmed: `Machine failure` is excluded from `CLUSTER_FEATURES`. Ground-truth labels are stored separately as `TRUE_LABELS` for post-hoc evaluation only.
+- Feature set (`Air temperature`, `Process temperature`, `Rotational speed`, `Torque`, `Tool wear`, `Type_encoded`) is identical to what will be used for K-Means — enabling fair algorithm comparison.
+- Ward linkage requires Euclidean distance — this constraint is enforced and documented in the notebook.
+- Dendrogram strategy (500-sample subset for visualisation, full 10,000-row dataset for model fitting) is explicitly documented in the notebook and this manifest.
+

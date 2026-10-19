@@ -56,7 +56,7 @@ AI-Industrial-Machine-Failure-Prediction/
     │   └── ai4i2020.csv            ← Canonical dataset for Review 2
     ├── notebooks/
     │   ├── classification/
-    │   │   ├── classification.ipynb    ← Classification Part B (Day 1: RF, AdaBoost, GB)
+    │   │   ├── classification.ipynb    ← Classification Part B (RF, AdaBoost, GB, Bagging, MLP, CV, Tuning)
     │   │   └── eval_utils.py           ← Shared evaluation helpers
     │   └── clustering/
     │       ├── clustering.ipynb        ← Clustering Track (Day 1: K-Means scaffold)
@@ -68,7 +68,7 @@ AI-Industrial-Machine-Failure-Prediction/
     │       ├── __init__.py
     │       └── clustering_utils.py     ← Source copy of clustering helpers
     ├── figures/
-    │   ├── classification/         ← Review 2 classification plots
+    │   ├── classification/         ← Review 2 classification plots (CMs, ROC curves, 10-model bar chart)
     │   └── clustering/             ← Review 2 clustering plots
     ├── models/                     ← Saved model files (.pkl)
     ├── docs/                       ← Integration documentation
@@ -95,7 +95,7 @@ jupyter notebook main.ipynb
 ```bash
 cd Review2
 
-# Classification Track (Part B Day 1)
+# Classification Track (Part B — Full Pipeline)
 jupyter notebook notebooks/classification/classification.ipynb
 
 # Clustering Track (K-Means Day 1)
@@ -112,7 +112,7 @@ jupyter notebook notebooks/clustering/clustering.ipynb
 | Preprocessing & Feature Engineering | ✅ Complete | — |
 | Regression Track (10 models) | ✅ Complete | — |
 | Classification Part A (5 models) | ✅ Complete | — |
-| Classification Part B (5 models) | — | 🔄 In Progress (Day 1: RF, AdaBoost, GB) |
+| Classification Part B (5 models) | — | ✅ Complete (RF, AdaBoost, GB, Bagging, MLP, CV, Tuning) |
 | K-Means Clustering | — | 🔄 In Progress (Day 1: Scaffold, scaling, k=3) |
 | Hierarchical Clustering | — | ⏳ Pending (Day 3 milestone) |
 | Pipeline Integration & Quality | — | 🔄 In Progress |

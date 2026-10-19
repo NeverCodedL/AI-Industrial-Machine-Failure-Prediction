@@ -60,16 +60,19 @@ AI-Industrial-Machine-Failure-Prediction/
     │   │   └── eval_utils.py           ← Shared evaluation helpers
     │   └── clustering/
     │       ├── clustering.ipynb        ← Clustering Track (Day 1: K-Means scaffold)
-    │       └── clustering_utils.py     ← Shared clustering helpers
+    │       ├── hierarchical_clustering.ipynb ← Hierarchical Clustering Track (Day 2: Metrics, PCA, t-SNE)
+    │       ├── clustering_utils.py     ← Shared clustering helpers
+    │       └── cluster_utils.py        ← Compatibility re-export helper
     ├── src/
     │   ├── classification/
     │   │   └── eval_utils.py           ← Source copy of evaluation helpers
     │   └── clustering/
     │       ├── __init__.py
-    │       └── clustering_utils.py     ← Source copy of clustering helpers
+    │       ├── clustering_utils.py     ← Source copy of clustering helpers
+    │       └── cluster_utils.py        ← Compatibility re-export helper
     ├── figures/
     │   ├── classification/         ← Review 2 classification plots (CMs, ROC curves, 10-model bar chart)
-    │   └── clustering/             ← Review 2 clustering plots
+    │   └── clustering/             ← Review 2 clustering plots (Dendrograms, PCA, t-SNE)
     ├── models/                     ← Saved model files (.pkl)
     ├── docs/                       ← Integration documentation
     └── app/                        ← GUI bonus (optional — pending)
@@ -98,8 +101,11 @@ cd Review2
 # Classification Track (Part B — Full Pipeline)
 jupyter notebook notebooks/classification/classification.ipynb
 
-# Clustering Track (K-Means Day 1)
+# Clustering Track (Day 1: K-Means Baseline Scaffold)
 jupyter notebook notebooks/clustering/clustering.ipynb
+
+# Clustering Track (Day 2: Hierarchical Clustering Pipeline)
+jupyter notebook notebooks/clustering/hierarchical_clustering.ipynb
 ```
 
 ---
@@ -114,7 +120,7 @@ jupyter notebook notebooks/clustering/clustering.ipynb
 | Classification Part A (5 models) | ✅ Complete | — |
 | Classification Part B (5 models) | — | ✅ Complete (RF, AdaBoost, GB, Bagging, MLP, CV, Tuning) |
 | K-Means Clustering | — | 🔄 In Progress (Day 1: Scaffold, scaling, k=3) |
-| Hierarchical Clustering | — | ⏳ Pending (Day 3 milestone) |
+| Hierarchical Clustering | — | ✅ Complete (Dendrograms, metrics, PCA 2D, t-SNE, benchmark) |
 | Pipeline Integration & Quality | — | 🔄 In Progress |
 | Presentation & Viva | ✅ Done | ⏳ Pending |
 

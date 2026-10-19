@@ -160,3 +160,64 @@ The `ai4i2020.csv` dataset exists in two locations after this migration:
 - `Review2/data/ai4i2020.csv` — used by Review 2 notebooks
 
 This intentional duplication ensures each review is self-contained and avoids cross-review path dependencies. Both files are identical (SHA verified). A future optimisation could use a symlink, but this is not recommended for GitHub compatibility.
+
+---
+
+## Person 3 Day 2 Integration — Hierarchical Clustering Pipeline, Metrics, PCA & t-SNE
+
+### Source and Branch
+
+| Item | Value |
+|---|---|
+| Source workspace | `Person3_Day2/` (local incoming handoff ZIP) |
+| Feature branch | `feature/review2-hierarchical-clustering-day2` |
+| Base commit | `f182b14` (Merge PR #2: Classification Track Day 2) |
+| Integration date | 2026-10-19 |
+
+### Files Integrated
+
+| Source (Person3_Day2) | Canonical Destination | Changes Made |
+|---|---|---|
+| `hierarchical_clustering.ipynb` | `Review2/notebooks/clustering/hierarchical_clustering.ipynb` | Standardized notebook title and academic context; data path resolved via multi-candidate resolution (`../../data/ai4i2020.csv`); figure path dynamically resolved to `../../figures/clustering/`; modularized utility imports (`clustering_utils`); version-resilient t-SNE execution (`max_iter=1000` with fallback for scikit-learn 1.2+); full original student analysis written for Dendrograms, Metrics across $k$, Cluster Profiling, PCA 2D, and t-SNE; K-Means benchmark metrics populated from Person 2 Day 1/Day 2 baseline; executed top-to-bottom with all outputs embedded (847 KB) |
+| Dendrograms output | `Review2/figures/clustering/dendrograms_all_linkages.png` | 3-panel dendrogram comparing Ward, Average, and Complete linkages ($n=500$ subset) |
+| Ward dendrogram output | `Review2/figures/clustering/dendrogram_ward.png` | High-resolution single Ward dendrogram illustrating cophenetic vertical merge gap |
+| PCA plot output | `Review2/figures/clustering/hierarchical_pca_clusters.png` | 2D PCA cluster projection ($62.53\%$ variance explained) with colorblind-friendly `Set2` palette |
+| t-SNE plot output | `Review2/figures/clustering/hierarchical_tsne.png` | Dual-panel t-SNE embedding ($n=3,000$, $\text{perplexity}=30$) showing cluster partitions vs ground-truth machine failure labels |
+
+### Reusable Utilities Updated & Created
+
+| Path | Purpose |
+|---|---|
+| `Review2/src/clustering/clustering_utils.py` | Canonical modular clustering utilities: `validate_clustering`, `profile_clusters`, `compute_clustering_metrics`, `evaluate_cluster_metrics`, `build_metrics_table`, `plot_cluster_scatter_2d`, `plot_pca_clusters`, `plot_tsne_clusters`, `plot_dendrograms` |
+| `Review2/notebooks/clustering/clustering_utils.py` | Local copy alongside notebook for zero-configuration imports in Jupyter |
+| `Review2/src/clustering/cluster_utils.py` | Backward-compatibility shim re-exporting all functions from `clustering_utils` |
+| `Review2/notebooks/clustering/cluster_utils.py` | Local backward-compatibility shim alongside notebook |
+
+### Files NOT Integrated (Internal Coordination Only)
+
+| File | Reason |
+|---|---|
+| `Person3_Day2/HANDOFF.md` | Internal team handoff coordination document |
+| `Person3_Day2/FILE_MANIFEST.md` | Internal distribution manifest |
+| `Person3_Day2/VALIDATION_CHECKLIST.md` | Internal checklist; verified directly via code execution and tests |
+| `Person3_Day2/data/ai4i2020.csv` | Duplicate copy; canonical dataset maintained at `Review2/data/ai4i2020.csv` |
+
+### Technical Issues Resolved & Safeguards
+
+1. **Scikit-Learn Version Compatibility in t-SNE:**
+   - In modern scikit-learn (v1.2+ / v1.4+ / v1.9+), `TSNE` keyword argument `n_iter` was deprecated and replaced with `max_iter`. Passing `n_iter=1000` causes an immediate `TypeError: TSNE.__init__() got an unexpected keyword argument 'n_iter'`.
+   - Fixed by wrapping instantiation with `max_iter=1000` and a graceful fallback to `n_iter` for legacy environments.
+2. **Path Resolution Across Execution Contexts:**
+   - Data loading now probes multiple candidate relative paths (`../../data/ai4i2020.csv`, `../data/`, `data/`, `ai4i2020.csv`), allowing the notebook to run seamlessly whether launched from repository root, `Review2/`, or `Review2/notebooks/clustering/`.
+   - Figure directory dynamically resolves to `Review2/figures/clustering/`.
+3. **Data Leakage Quarantine:**
+   - Strictly enforced exclusion of target label `Machine failure` and sub-types `TWF`, `HDF`, `PWF`, `OSF`, `RNF` from feature matrix $X_{\text{cluster}}$.
+   - Ground truth passed strictly as post-hoc reference for profiling and the secondary t-SNE panel.
+4. **Validation Guardrails (All PASS):**
+   - Cluster count $k=3$ matches expectation.
+   - All clusters have $\ge 2$ samples (Ward: $N_0=4,921, N_1=4,251, N_2=828$; no singletons).
+   - No cluster exceeds $95\%$ of the dataset.
+   - Label leakage check verified.
+5. **Top-to-Bottom Execution Verification:**
+   - Executed cleanly via `jupyter nbconvert --execute --inplace hierarchical_clustering.ipynb`. Exit code 0, 847,407 bytes, all outputs and visual plots visible.
+

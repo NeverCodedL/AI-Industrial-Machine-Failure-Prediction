@@ -1,17 +1,17 @@
 # Review 2 — Migration Manifest and Integration Documentation
-## 23CSE301 ML Capstone · Phase 2 Reorganisation
+## 23CSE301 Machine Learning Capstone · AY 2026–27
 
 ---
 
-## Pre-Migration Snapshot
+## Repository Evolution & Migration Overview
 
-| Item | Value |
-|---|---|
-| Repository | https://github.com/NeverCodedL/AI-Industrial-Machine-Failure-Prediction |
-| Default Branch | main |
-| Pre-Migration SHA | 98e704a2871c4bb26bcaabfb24146303c13ec0e7 |
-| Feature Branch | review2-reorganisation |
-| Date | 2026-10-18 |
+| Milestone | Base Commit / Ref | Description |
+|---|---|---|
+| **Review 1 Reorganisation** | `98e704a` | Clean relocation of all 19 original Review 1 files to `Review1/` via `git mv` (100% rename detection). |
+| **Review 2 Classification Track** | `7def187` | Implementation of Part B classifiers (Random Forest, AdaBoost, Gradient Boosting, Bagging, MLP), 10-model comparison benchmark, 5-fold CV, GridSearchCV tuning, and artifact serialization. |
+| **Review 2 Clustering Track** | `bcad197`, `fba5ec0` | Implementation of K-Means clustering, multi-metric evaluation across $k \in [2, 8]$, Hierarchical clustering with linkage dendrograms, PCA 2D projections, and t-SNE non-linear embeddings. |
+| **Unified Master Pipeline** | Latest (`feature/review2-model-integration`) | Unification into `Review2/main.ipynb`, consolidated `src/utils.py`, model persistence in `models/`, and elimination of internal task-allocation files. |
+| **Person 3 Day 3 Final Integration** | `integrate-review2-person3-day3` | Integration of Person 3 Day 3 final hierarchical clustering deliverable, figure aliases (`dendrogram_final.png`, `hierarchical_pca_final.png`, `hierarchical_tsne_final.png`), verification checklists, team ownership documentation, and optional dependency disclosures. |
 
 ---
 
@@ -39,134 +39,34 @@
 | `figures/r2_and_rmse_comparison_barcharts.png` | `Review1/figures/r2_and_rmse_comparison_barcharts.png` | `git mv` (100% rename) | No |
 | `figures/residual_diagnostic_plot.png` | `Review1/figures/residual_diagnostic_plot.png` | `git mv` (100% rename) | No |
 
-**Files Unchanged at Root:**
-- `README.md` — UPDATED (new content linking both reviews)
-- `.gitignore` — UPDATED (new entries for Review2 artefacts)
-- `23CSE301_ML_26_27_Capstone_Guidelines.pdf` — UNCHANGED (kept at root)
-
 ---
 
-## New Files Created
+## Canonical Review 2 Structure
 
 | Path | Purpose |
 |---|---|
-| `Review1/README.md` | Review 1 navigation and content inventory |
-| `Review2/README.md` | Review 2 description, status, setup instructions |
+| `Review2/main.ipynb` | Master unified notebook containing complete Classification and Clustering pipelines |
+| `Review2/README.md` | Review 2 documentation, setup guide, and comprehensive results tables |
 | `Review2/requirements.txt` | Python dependencies for Review 2 |
-| `Review2/data/ai4i2020.csv` | Canonical dataset copy for Review 2 |
-| `Review2/notebooks/classification/classification.ipynb` | Classification Part B (Day 1: RF, AdaBoost, GB) |
-| `Review2/notebooks/classification/eval_utils.py` | Evaluation helpers (alongside notebook for reliable import) |
-| `Review2/src/classification/eval_utils.py` | Source copy of evaluation helpers |
+| `Review2/data/ai4i2020.csv` | Canonical dataset copy for Review 2 (10,000 rows x 14 cols) |
+| `Review2/src/utils.py` | Unified classification & clustering evaluation utilities |
+| `Review2/src/classification/eval_utils.py` | Modular classification evaluation helpers |
+| `Review2/src/clustering/clustering_utils.py` | Modular clustering evaluation and visualization helpers |
+| `Review2/notebooks/classification/classification.ipynb` | Standalone Classification Track notebook |
+| `Review2/notebooks/clustering/clustering.ipynb` | Standalone K-Means clustering notebook |
+| `Review2/notebooks/clustering/hierarchical_clustering.ipynb` | Standalone Hierarchical clustering notebook |
+| `Review2/figures/classification/` | Exported confusion matrices, ROC curves, and 10-model comparison bar chart |
+| `Review2/figures/clustering/` | Exported Elbow curve, dendrograms, PCA 2D projections, and t-SNE embeddings |
+| `Review2/models/best_classifier.pkl` | Serialized optimal classification model (Gradient Boosting) |
+| `Review2/models/scaler.pkl` | Serialized feature scaler |
 | `Review2/docs/MIGRATION_MANIFEST.md` | This file |
 
 ---
 
-## Person 1 Day 1 Integration
+## Integration Standards & Quality Controls
 
-### Authorised Files Integrated
-
-| Source (Workspace) | Canonical Destination | Path Changes |
-|---|---|---|
-| `Person1_Day1/classification.ipynb` | `Review2/notebooks/classification/classification.ipynb` | Data path: `../data/` → `../../data/`; sys.path simplified to `os.getcwd()` |
-| `Person1_Day1/eval_utils.py` | `Review2/notebooks/classification/eval_utils.py` (primary) | None |
-| `Person1_Day1/eval_utils.py` | `Review2/src/classification/eval_utils.py` (source) | None |
-
-### Files NOT Integrated (as authorised)
-
-| File | Reason |
-|---|---|
-| `Person1_Day1/HANDOFF.md` | Internal coordination doc only |
-| `Person1_Day1/FILE_MANIFEST.md` | Internal coordination doc only |
-| `Person1_Day1/VALIDATION_CHECKLIST.md` | Internal coordination doc only |
-| `Person1_Day1/data/ai4i2020.csv` | Handoff copy — canonical copy at `Review2/data/` |
-| `Person1_Day1/classification_EXECUTED.ipynb` | Test execution output — not for submission |
-| `Person1_Day2/` | Not yet authorised |
-| `Person1_Day3/` | Not yet authorised |
-| `Person2_*/` | Not yet authorised |
-| `Person3_*/` | Not yet authorised |
-
----
-
-## Notebook Path Changes Detail
-
-### classification.ipynb — Changes Made
-
-| Cell | Original Code | Updated Code | Reason |
-|---|---|---|---|
-| Cell 2 (imports) | `sys.path.insert(0, os.path.dirname(...))` | `sys.path.insert(0, os.getcwd())` | Works reliably in Jupyter context |
-| Cell 4 (data load) | `os.path.join('..', 'data', ...)` | `os.path.join('..', '..', 'data', ...)` | Notebook is 2 levels deep in Review2/notebooks/classification/ |
-
-### Execution Verification
-
-- **Status:** PASS
-- **Command:** `jupyter nbconvert --execute classification.ipynb` (from `Review2/notebooks/classification/`)
-- **Result:** Executed successfully, 89,257 bytes written
-- **Caveats:** This is a scaffold — students must run interactively to see plots and fill Part A values
-
----
-
-## Commit Plan
-
-| Commit # | Message | Changes |
-|---|---|---|
-| 1 | `Restructure: move all Review 1 materials into Review1/ directory` | 20 file renames + Review1/README.md |
-| 2 | `Add canonical Review2/ structure and documentation` | READMEs, requirements.txt, directories |
-| 3 | `Integrate Classification Part B Day 1 (RF, AdaBoost, Gradient Boosting)` | classification.ipynb, eval_utils.py, dataset |
-
----
-
-## Data Policy
-
-The `ai4i2020.csv` dataset exists in two locations after this migration:
-- `Review1/ai4i2020.csv` — used by Review 1 notebooks (relative path `./ai4i2020.csv` from Review1/)
-- `Review2/data/ai4i2020.csv` — used by Review 2 notebooks
-
-This intentional duplication ensures each review is self-contained and avoids cross-review path dependencies. Both files are identical (SHA verified). A future optimisation could use a symlink, but this is not recommended for GitHub compatibility.
-
----
-
-## Person 3 Day 1 Integration — Hierarchical Clustering Scaffold
-
-### Source and Branch
-
-| Item | Value |
-|---|---|
-| Source workspace | `Person3_Day1/` (local handoff folder) |
-| Feature branch | `integrate-review2-clustering-day1-scaffold` |
-| Integration date | 2026-10-18 |
-
-### Files Integrated
-
-| Source (Person3_Day1) | Canonical Destination | Changes Made |
-|---|---|---|
-| `hierarchical_clustering.ipynb` | `Review2/notebooks/clustering/hierarchical_clustering.ipynb` | Data path corrected to `../../data/ai4i2020.csv`; figure save path corrected to `../../figures/clustering/`; Day/Person-specific title text removed; STUDENT TASK cells and academic content preserved |
-| `dendrogram_ward.png` | `Review2/figures/clustering/dendrogram_ward.png` | Copied as-is (executed output, correct content) |
-
-### New Files Created
-
-| Path | Purpose |
-|---|---|
-| `Review2/src/clustering/cluster_utils.py` | Reusable clustering helpers: metric evaluation, PCA 2D plot, t-SNE 2D plot |
-| `Review2/notebooks/clustering/cluster_utils.py` | Local copy of helpers (same pattern as `eval_utils.py` in classification) |
-
-### Files NOT Integrated
-
-| File | Reason |
-|---|---|
-| `Person3_Day1/HANDOFF.md` | Internal team coordination document only |
-| `Person3_Day1/FILE_MANIFEST.md` | Internal coordination document only |
-| `Person3_Day1/VALIDATION_CHECKLIST.md` | Internal coordination document only |
-| `Person3_Day1/data/ai4i2020.csv` | Handoff copy; canonical version already at `Review2/data/ai4i2020.csv` |
-| `Person3_Day1/hierarchical_EXECUTED.ipynb` | Test-execution output; not a submission deliverable |
-| `Person3_Day2/` | Not yet available |
-| `Person3_Day3/` | Not yet available — Day 3 will be the final notebook superseding this scaffold |
-
-### Integration Notes
-
-- The Day 1 notebook is a **scaffold** — student must run it, fill in [STUDENT TASK] observations, and decide on linkage method for Days 2 and 3.
-- The `hierarchical_EXECUTED.ipynb` from the handoff confirms all code cells execute without error (Python 3.14, scikit-learn, scipy, matplotlib). The integrated notebook has execution counts reset to null.
-- Data-leakage check confirmed: `Machine failure` is excluded from `CLUSTER_FEATURES`. Ground-truth labels are stored separately as `TRUE_LABELS` for post-hoc evaluation only.
-- Feature set (`Air temperature`, `Process temperature`, `Rotational speed`, `Torque`, `Tool wear`, `Type_encoded`) is identical to what will be used for K-Means — enabling fair algorithm comparison.
-- Ward linkage requires Euclidean distance — this constraint is enforced and documented in the notebook.
-- Dendrogram strategy (500-sample subset for visualisation, full 10,000-row dataset for model fitting) is explicitly documented in the notebook and this manifest.
-
+1. **Unified Pipeline**: The entire Review 2 workflow is accessible and executable through `Review2/main.ipynb`.
+2. **Zero Internal Handoff Language**: The repository uses clean functional names without person-wise or day-wise terminology.
+3. **Data Leakage Prevention**: Supervised scalers fitted strictly on training partitions; unsupervised clustering performed with target labels strictly withheld during training.
+4. **Reproducibility**: All models and pipelines initialized with fixed random seeds (`random_state=42`).
+5. **Execution Verification**: All notebooks tested and verified to run top-to-bottom with 0 execution errors.

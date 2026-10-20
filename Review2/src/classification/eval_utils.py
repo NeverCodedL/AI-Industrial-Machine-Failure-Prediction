@@ -1,3 +1,4 @@
+import os
 """
 eval_utils.py  —  Shared evaluation helpers for Classification Track
 23CSE301 ML Capstone, Review 2
@@ -154,5 +155,37 @@ def plot_metric_barplot(results_df: pd.DataFrame, metric: str = "F1", save_path=
     ax.invert_yaxis()
     plt.tight_layout()
     if save_path:
+        fig.savefig(save_path, bbox_inches="tight", dpi=150)
+    plt.show()
+
+
+def plot_confusion_matrices_grid(cms_dict: dict, class_names=None, save_path=None):
+    """
+    Plot a grid of confusion matrices for multiple models.
+
+    Parameters
+    ----------
+    cms_dict    : dict of {model_name: (y_true, y_pred)}
+    class_names : list of class names (e.g. ['Normal', 'Failure'])
+    save_path   : optional file path to save the generated figure
+    """
+    n_models = len(cms_dict)
+    ncols = 3
+    nrows = (n_models + ncols - 1) // ncols
+    fig, axes = plt.subplots(nrows, ncols, figsize=(5 * ncols, 4 * nrows))
+    axes = np.array(axes).flatten()
+
+    for idx, (name, (y_true, y_pred)) in enumerate(cms_dict.items()):
+        cm = confusion_matrix(y_true, y_pred)
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=class_names)
+        disp.plot(ax=axes[idx], cmap="Blues", colorbar=False)
+        axes[idx].set_title(f"Confusion Matrix — {name}", fontsize=11, fontweight="bold")
+
+    for ax in axes[n_models:]:
+        ax.axis("off")
+
+    plt.tight_layout()
+    if save_path:
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
         fig.savefig(save_path, bbox_inches="tight", dpi=150)
     plt.show()

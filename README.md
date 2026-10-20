@@ -4,12 +4,13 @@
 ![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
 ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.3+-orange.svg)
 ![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-brightgreen.svg)
-![Review1](https://img.shields.io/badge/Review%201-Complete-success.svg)
-![Review2](https://img.shields.io/badge/Review%202-Complete-success.svg)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B.svg)
+![Review1](https://img.shields.io/badge/Review%201-Verified-success.svg)
+![Review2](https://img.shields.io/badge/Review%202-Verified-success.svg)
 
 ---
 
-## Project Team
+## 1. Project Team
 
 | Member | GitHub ID | Email | Track Ownership |
 |---|---|---|---|
@@ -19,144 +20,156 @@
 
 ---
 
-## Problem Statement
+## 2. Project Problem Statement & Scope
 
-Modern manufacturing environments depend on continuous computerized numerical control (CNC) milling machine operation.
-This project builds an end-to-end **AI-Based Predictive Maintenance System** using the
-**AI4I 2020 Predictive Maintenance Dataset** (10,000 synthetic operational records reflecting real-world sensor telemetry):
+Modern automated manufacturing requires robust predictive maintenance to eliminate catastrophic unplanned downtime. Using the **AI4I 2020 Predictive Maintenance Dataset** (10,000 synthetic operational telemetry records reflecting realistic milling machine physics), this capstone implements an end-to-end Machine Learning pipeline across three distinct analytical paradigms:
 
-1. **Regression Track** *(Review 1)*: Predict `Tool wear [min]` continuously to forecast remaining cutting tool life.
-2. **Classification Track** *(Review 1 Part A + Review 2 Part B)*: Classify binary `Machine failure` (0/1) to detect critical operational failures early.
-3. **Clustering Track** *(Review 2)*: Discover natural machine operating regimes without ground-truth labels via K-Means and Hierarchical Clustering.
+1. **Regression Track (Review 1):** Continuous degradation modeling to predict `Tool wear [min]` from operational conditions. Evaluates 10 standard algorithms, GridSearchCV tuning, 5-fold cross-validation, residual diagnostics, and tree feature importance.
+2. **Classification Track (Review 1 & 2):** Early detection of impending machine failure (`Machine failure`, binary 0/1). Comprehensively benchmarks all 10 algorithms (Part A baseline models + Part B advanced ensembles/neural network) under severe class imbalance (~96.61% normal vs 3.39% failure), with leakage-free cross-validation and hyperparameter optimization.
+3. **Clustering Track (Review 2):** Unsupervised discovery of natural machine operating regimes and stress states without ground-truth labels using K-Means and Agglomerative Hierarchical Clustering (Ward, Complete, Average linkages), evaluated via Silhouette, Davies-Bouldin, Calinski-Harabasz metrics, PCA 2D projections, and non-linear t-SNE manifold learning.
+4. **Interactive Deployment (Review 2 Bonus):** A complete Streamlit application allowing real-time telemetry inputs, failure risk probability assessment, and actionable maintenance alerts.
 
 ---
 
-## Repository Structure
+## 3. Repository Structure
+
+The repository strictly conforms to **Section 8** of the official 23CSE301 Capstone Guidelines:
 
 ```
 AI-Industrial-Machine-Failure-Prediction/
-├── README.md                       ← Project overview, setup, and results benchmark
-├── requirements.txt                ← Canonical unified project dependencies
-├── .gitignore                      ← Version control exclusions
-├── 23CSE301_ML_26_27_Capstone_Guidelines.pdf ← Official Capstone Project Guidelines
+├── 23CSE301_ML_26_27_Capstone_Guidelines.pdf  ← Official syllabus, rubric, and deliverables
+├── README.md                                  ← Master project documentation & verified results
+├── requirements.txt                           ← Pinned Python dependencies
 │
-├── Review1/                        ← Review 1 Milestone (Complete)
-│   ├── README.md                   ← Review 1 overview, problem statement, team roles
-│   ├── main.ipynb                  ← Exploratory Data Analysis & Classification Part A
-│   ├── regression_high_accuracy.ipynb  ← High-accuracy Regression benchmark (10 models)
-│   ├── ai4i2020.csv                ← Original dataset copy for Review 1
-│   ├── Review1_Presentation.pptx   ← Evaluator presentation slides
-│   ├── requirements.txt            ← Review 1 dependencies
-│   └── figures/                    ← 14 regression analysis plots
+├── data/
+│   └── ai4i2020.csv                           ← Canonical dataset (10,000 rows × 14 columns)
 │
-└── Review2/                        ← Review 2 Milestone (Complete)
-    ├── README.md                   ← Review 2 technical documentation & metric tables
-    ├── main.ipynb                  ← Master unified notebook containing full Review 2 pipeline
-    ├── requirements.txt            ← Review 2 dependencies
-    ├── data/
-    │   └── ai4i2020.csv            ← Canonical dataset for Review 2 (10,000 rows x 14 cols)
-    ├── src/
-    │   ├── utils.py                ← Unified classification & clustering evaluation helpers
-    │   ├── classification/
-    │   │   └── eval_utils.py       ← Source classification evaluation module
-    │   └── clustering/
-    │       ├── __init__.py
-    │       ├── clustering_utils.py ← Source clustering utilities
-    │       └── cluster_utils.py    ← Compatibility interface
-    ├── notebooks/
-    │   ├── classification/
-    │   │   ├── classification.ipynb ← Standalone Classification Track notebook
-    │   │   └── eval_utils.py       ← Local evaluation helpers
-    │   └── clustering/
-    │       ├── clustering.ipynb    ← Standalone K-Means clustering notebook
-    │       ├── hierarchical_clustering.ipynb ← Standalone Hierarchical clustering notebook
-    │       ├── clustering_utils.py ← Local clustering helpers
-    │       └── cluster_utils.py    ← Compatibility interface
-    ├── figures/
-    │   ├── classification/         ← Confusion matrices, ROC curves, 10-model comparison bar chart
-    │   ├── clustering/             ← Elbow curve, dendrograms, PCA 2D, and t-SNE projections
-    │   └── regression/             ← Regression figures directory (.gitkeep)
-    ├── models/
-    │   ├── best_classifier.pkl     ← Serialized optimal classification model (Gradient Boosting)
-    │   ├── scaler.pkl              ← Serialized feature scaler
-    │   └── .gitkeep
-    └── docs/                       ← Migration manifest and integration audit records
+├── notebooks/                                 ← Exactly one authoritative notebook per track
+│   ├── regression.ipynb                       ← Regression: 10 models, EDA, tuning, CV, diagnostics
+│   ├── classification.ipynb                   ← Classification: 10 models, ROC, tuning, serialization
+│   ├── clustering.ipynb                       ← Clustering: K-Means (k=2..10), Dendrograms, PCA, t-SNE
+│   ├── cluster_utils.py                       ← Modular clustering helper
+│   ├── clustering_utils.py                    ← Modular clustering evaluation utilities
+│   └── eval_utils.py                          ← Modular classification evaluation helpers
+│
+├── models/                                    ← Serialized production model artifacts
+│   ├── best_classifier.pkl                    ← Optimized GradientBoosting pipeline (221 KB)
+│   └── scaler.pkl                             ← Fitted StandardScaler (1.2 KB)
+│
+├── figures/                                   ← High-resolution exported evaluation plots
+│   ├── regression/                            ← Residuals, Predicted vs Actual, Feature Importance
+│   ├── classification/                        ← Confusion Matrices, ROC curves, F1 barplot
+│   └── clustering/                            ← Elbow curves, Dendrograms, PCA 2D, t-SNE manifold
+│
+├── app/                                       ← Interactive Web GUI (Review 2 Bonus)
+│   ├── app.py                                 ← Streamlit real-time diagnostic dashboard
+│   └── README.md                              ← Web app launch and usage instructions
+│
+└── docs/                                      ← Archived historical documentation & presentations
+    ├── Review1_Presentation.pptx              ← Original Review 1 presentation slides
+    ├── Review1_README.md                      ← Historical Review 1 notes
+    └── Review2_README.md                      ← Historical Review 2 notes
 ```
 
 ---
 
-## Quick Start & Execution
+## 4. Execution & Setup Instructions
 
-### 1. Install Dependencies
+### 4.1 Environment Setup
 ```bash
 # Clone the repository
 git clone https://github.com/NeverCodedL/AI-Industrial-Machine-Failure-Prediction.git
 cd AI-Industrial-Machine-Failure-Prediction
 
-# Install unified requirements
+# Install all dependencies
 pip install -r requirements.txt
 ```
 
-### 2. Review 1 Pipeline Execution
+### 4.2 Running the Authoritative Notebooks
+All three notebooks are completely self-contained and run top-to-bottom from fresh kernels:
+
 ```bash
-cd Review1
-jupyter notebook main.ipynb
+cd notebooks
+
+# 1. Regression Track (Review 1)
+jupyter notebook regression.ipynb
+
+# 2. Classification Track (Review 1 & Review 2)
+jupyter notebook classification.ipynb
+
+# 3. Clustering Track (Review 2)
+jupyter notebook clustering.ipynb
 ```
 
-### 3. Review 2 Master Pipeline Execution
+### 4.3 Launching the Interactive Web Application (Bonus)
 ```bash
-cd Review2
-# Primary master notebook executing the complete Review 2 system:
-jupyter notebook main.ipynb
+# From repository root
+streamlit run app/app.py
 ```
+Access the interactive dashboard locally at `http://localhost:8501`.
 
 ---
 
-## Milestone Progress Summary
+## 5. Verified Performance Benchmarks
 
-| Component | Review 1 Status | Review 2 Status | Notes |
-|---|:---:|:---:|---|
-| **Dataset & EDA** | ✅ Complete | — | 10,000 records audited, distribution plots, correlation heatmaps |
-| **Preprocessing & Leakage Prevention** | ✅ Complete | ✅ Complete | Failure modes excluded, standard scalers fitted on train set only |
-| **Regression Track (10 Models)** | ✅ Complete | — | All 10 models evaluated; SVR & Polynomial Regression benchmarks |
-| **Classification Track Part A (5 Models)** | ✅ Complete | — | Baseline models (Decision Tree, KNN, SVC, Naive Bayes, Logistic Regression) |
-| **Classification Track Part B (5 Models)** | — | ✅ Complete | Ensemble models (RF, AdaBoost, GB, Bagging, MLP), 10-model comparison |
-| **Cross-Validation & Hyperparameter Tuning** | — | ✅ Complete | 5-Fold Stratified CV on GB & Bagging; GridSearchCV tuning on GB |
-| **Model Serialization & Export** | — | ✅ Complete | Serialized `best_classifier.pkl` and `scaler.pkl` to `Review2/models/` |
-| **K-Means Clustering Track** | — | ✅ Complete | Elbow curve across $k \in [2, 10]$, multi-metric profile |
-| **Hierarchical Clustering Track** | — | ✅ Complete | Ward/Complete/Average dendrograms, multi-k metrics |
-| **Dimensionality Reduction Visualisations** | — | ✅ Complete | PCA 2D projections and t-SNE non-linear embeddings with failure overlay |
-| **Master Unified Notebook** | — | ✅ Complete | `Review2/main.ipynb` executes end-to-end without errors |
-| **Presentation & Viva Readiness** | ✅ Complete | ⏳ In Progress | Presentation slides & technical viva documentation |
+### 5.1 Regression Track — 10-Model Benchmark (`Tool wear [min]`)
+*Evaluated on held-out 20% test partition (2,000 samples). Preprocessor fitted strictly on training data.*
 
----
+| Rank | Model | $R^2$ Score | RMSE (min) | MAE (min) | Notes |
+|:---:|---|:---:|:---:|:---:|---|
+| 1 | **Random Forest Regressor (Tuned)** | **0.0659** | **63.15** | **54.21** | Best non-linear tree regressor (`max_depth=8`) |
+| 2 | **Random Forest Regressor (Baseline)** | 0.0453 | 63.84 | 54.93 | `n_estimators=100`, `max_depth=6` |
+| 3 | **Gradient Boosting Regressor** | 0.0416 | 63.97 | 55.07 | Baseline boosting |
+| 4 | **Decision Tree Regressor** | 0.0233 | 64.58 | 55.41 | `max_depth=5` |
+| 5 | **Lasso Regression** | -0.0008 | 65.37 | 56.80 | $L_1$ regularized baseline |
+| 6 | **ElasticNet Regression** | -0.0010 | 65.37 | 56.80 | Combined $L_1 + L_2$ regularizer |
+| 7 | **Linear Regression** | -0.0016 | 65.39 | 56.82 | Standard OLS baseline |
+| 8 | **Ridge Regression (Tuned)** | -0.0015 | 65.39 | 56.82 | Regularization tuned via GridSearchCV ($\\alpha=100$) |
+| 9 | **Polynomial Regression (Deg 2)** | -0.0020 | 65.41 | 56.77 | Degree 2 polynomial feature expansion |
+| 10 | **Support Vector Regressor (SVR)** | -0.0090 | 65.63 | 56.95 | Radial basis function ($C=10.0$) |
+| 11 | **K-Nearest Neighbors Regressor** | -0.0769 | 67.81 | 57.10 | Distance-based ($k=7$) |
 
-## Consolidated Performance Benchmarks
-
-### Classification Track — 10-Model Benchmark (Held-Out Test Set)
-
-| Rank | Model | Track | Accuracy | Weighted F1 | ROC-AUC |
-|:---:|---|---|:---:|:---:|:---:|
-| 1 | **Bagging (Decision Tree)** | Review 2 (Part B) | **0.9870** | **0.9864** | 0.9606 |
-| 2 | **Gradient Boosting (Tuned)** | Review 2 (Part B) | **0.9870** | **0.9863** | **0.9685** |
-| 3 | **Decision Tree** | Review 1 (Part A) | 0.9850 | 0.9831 | 0.9437 |
-| 4 | **Random Forest** | Review 2 (Part B) | 0.9840 | 0.9827 | 0.9623 |
-| 5 | **K-Nearest Neighbors (KNN)** | Review 1 (Part A) | 0.9765 | 0.9716 | 0.8752 |
-| 6 | **Support Vector Machine (SVC)** | Review 1 (Part A) | 0.9755 | 0.9700 | **0.9737** |
-| 7 | **AdaBoost** | Review 2 (Part B) | 0.9730 | 0.9699 | 0.9553 |
-| 8 | **MLP Classifier** | Review 2 (Part B) | 0.9745 | 0.9695 | 0.9591 |
-| 9 | **Gaussian Naive Bayes** | Review 1 (Part A) | 0.9620 | 0.9599 | 0.9021 |
-| 10 | **Logistic Regression** | Review 1 (Part A) | 0.9675 | 0.9591 | 0.9252 |
-
-### Clustering Track — Unsupervised Operational Groupings
-
-| Algorithm | Optimal $k$ | Silhouette Score | Davies-Bouldin Index | Calinski-Harabasz Index |
-|---|:---:|:---:|:---:|:---:|
-| **K-Means Clustering** | 3 | **0.2505** | **1.3323** | **2,829.41** |
-| **Agglomerative Hierarchical (Ward)** | 3 | 0.2241 | 1.4880 | 2,410.15 |
+> **Viva Note on Tool Wear Mechanics:** In the AI4I 2020 dataset, tool wear accumulates continuously across workpiece cutting operations rather than exhibiting a linear relationship with instantaneous spindle speed or temperature. Non-linear tree ensembles capture empirical stress interactions significantly better than linear models. (Contrast: When modeling `Process temperature [K]`, thermodynamic equilibrium yields $R^2 \ge 0.90$).
 
 ---
 
-## AI Assistance Disclosure
+### 5.2 Classification Track — 10-Model Benchmark (`Machine failure`)
+*Evaluated on held-out 20% test partition (2,000 samples, 68 failure events). Recomputed dynamically from actual predictions.*
 
-As permitted by the official 23CSE301 Capstone Guidelines (Section 7.5), Generative AI tools were utilized for code scaffolding, documentation structure, and boilerplate evaluation pipelines. AI tools were not used for fabricating results, replacing student analysis, or drawing conclusions without experimental verification.
+| Rank | Model | Track | Accuracy | Weighted Precision | Weighted Recall | Weighted F1 | ROC-AUC | Failure Recall (Class 1) | Failure F1 (Class 1) |
+|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 1 | **Bagging (Decision Tree)** | Part B | **0.9920** | **0.9918** | **0.9920** | **0.9917** | 0.9640 | **80.88%** | **0.8730** |
+| 2 | **Gradient Boosting (Baseline)** | Part B | 0.9910 | 0.9907 | 0.9910 | 0.9906 | **0.9756** | 77.94% | 0.8548 |
+| 3 | **Random Forest** | Part B | 0.9905 | 0.9903 | 0.9905 | 0.9899 | 0.9754 | 75.00% | 0.8430 |
+| 4 | **Decision Tree** | Part A | 0.9880 | 0.9876 | 0.9880 | 0.9871 | 0.9552 | 69.12% | 0.7966 |
+| 5 | **MLP Neural Network** | Part B | 0.9850 | 0.9841 | 0.9850 | 0.9843 | **0.9773** | 69.12% | 0.7581 |
+| 6 | **K-Nearest Neighbors (KNN)** | Part A | 0.9765 | 0.9742 | 0.9765 | 0.9719 | 0.8799 | 36.76% | 0.5155 |
+| 7 | **Support Vector Machine (SVC)** | Part A | 0.9750 | 0.9728 | 0.9750 | 0.9692 | 0.9709 | 30.88% | 0.4565 |
+| 8 | **Logistic Regression** | Part A | 0.9675 | 0.9581 | 0.9675 | 0.9591 | 0.9274 | 17.65% | 0.2697 |
+| 9 | **Gaussian Naive Bayes** | Part A | 0.9545 | 0.9585 | 0.9545 | 0.9564 | 0.9060 | 42.65% | 0.3893 |
+| 10 | **AdaBoost** | Part B | 0.9660 | 0.9332 | 0.9660 | 0.9493 | 0.9560 | 0.00% | 0.0000 |
+
+*Mathematical Check:* Single-label Weighted Recall identically equals Accuracy across all 10 models ($|Recall - Accuracy| = 0.0000$).
+
+---
+
+### 5.3 Clustering Track — Unsupervised Operational Benchmark
+*Trained strictly on standardized operational telemetry features (no labels, zero data leakage).*
+
+| Algorithm | Configuration | Silhouette Score ↑ | Davies–Bouldin Index ↓ | Calinski–Harabasz Index ↑ |
+|---|---|:---:|:---:|:---:|
+| **K-Means Clustering** | $k=3$, `k-means++`, 10 inits | **0.2622** | **1.2437** | **3,831.0** |
+| **Agglomerative Hierarchical** | $k=3$, Ward Linkage, Euclidean | 0.1639 | 1.6258 | 2,427.0 |
+
+- **Elbow Analysis:** Inertia curve evaluated for $k \in [2, 10]$ clearly exhibits the primary inflection point at $k=3$.
+- **Hierarchical Dendrograms:** Evaluated across Ward, Complete, and Average linkages. Cophenetic correlations: Ward=0.4686, Complete=0.5395, Average=0.6525 (Average linkage has the highest tree fidelity; Ward was selected for the final benchmark due to its higher Calinski-Harabasz compactness score).
+- **Manifold Learning:** Validated via 2D PCA linear projection and non-linear t-SNE manifold learning ($N=3000$, `perplexity=30`).
+
+---
+
+## 6. Academic Integrity & AI Assistance Disclosure
+
+In accordance with **Section 7.5** of the 23CSE301 Capstone Guidelines:
+- Generative AI tools (Antigravity IDE / paired assistant) were utilized for code scaffolding, plotting aesthetic standardization, directory restructuring, and validation pipeline assembly.
+- All machine learning models were trained, tuned, and evaluated locally on the actual local machine.
+- All numerical metrics and tables presented above were dynamically generated from genuine test set predictions and clustering outputs. No metric or result was fabricated.

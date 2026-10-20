@@ -45,16 +45,15 @@ Predict industrial machine failures using sensor data from the **AI4I 2020 Predi
 
 ---
 
-## How to Run
+## Execution & Canonical Location
 
 ```bash
-# From this directory (Review1/)
+# To run the unified canonical regression analysis from the repository root:
 pip install -r requirements.txt
-jupyter notebook main.ipynb
+jupyter notebook notebooks/regression.ipynb
 ```
 
-**Note:** The notebooks load data from `./ai4i2020.csv` (relative to this directory).  
-After the Review 2 restructuring, paths are relative to `Review1/` — verify before running.
+**Note:** For the unified project structure, regression analysis is maintained canonically in `notebooks/regression.ipynb` using `data/ai4i2020.csv`, with exported diagnostic figures saved to `figures/regression/`.
 
 ---
 
@@ -68,4 +67,4 @@ Summary figures are in `figures/`.
 ## Navigation
 
 - [Back to Project Root](../README.md)
-- [Review 2](../Review2/README.md)
+- [Review 2 Documentation](Review2_README.md)

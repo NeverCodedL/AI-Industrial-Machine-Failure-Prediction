@@ -208,9 +208,19 @@ Evaluated across the 6 scaled operational sensor telemetry channels ($N = 10,000
 
 ### Clustering Figures (`figures/clustering/`):
 - `kmeans_elbow_silhouette.png` — K-Means Elbow curve (Inertia) & Silhouette profile across $k \in [2, 8]$
-- `dendrogram_ward.png` — Hierarchical tree dendrograms across Ward, Complete, and Average linkage criteria
-- `hierarchical_pca_clusters.png` — PCA 2D projections of K-Means and Hierarchical clusters
-- `hierarchical_tsne.png` — t-SNE non-linear manifold embeddings with post-hoc failure overlay
+- `dendrogram_ward.png` / `dendrogram_final.png` / `dendrograms_all_linkages.png` — Hierarchical tree dendrograms across Ward, Complete, and Average linkage criteria (subset $n=500$)
+- `hierarchical_pca_clusters.png` / `hierarchical_pca_final.png` — PCA 2D projections of K-Means and Hierarchical clusters (62.53% explained variance)
+- `hierarchical_tsne.png` / `hierarchical_tsne_final.png` — t-SNE non-linear manifold embeddings with post-hoc failure overlay ($n=3,000$)
+
+---
+
+## Team & Functional Ownership
+
+| Member | Roll / Identity | Assigned Track | Primary Responsibilities |
+|---|---|---|---|
+| **M Anish Reddy** | Person 1 (`@NeverCodedL`) | Classification Track (Part B) | 5 ensemble/neural classifiers, full 10-model comparative benchmark, 5-fold CV, and hyperparameter tuning |
+| **Maneesh Janjam** | Person 2 (`@maneshhack`) | Clustering Track (K-Means) | K-Means implementation, Elbow curve (Inertia), separation metrics across $k \in [2, 8]$, cluster profiling |
+| **Tarun Manikanta** | Person 3 (`@tarunmanikanta5706`) | Clustering Track (Hierarchical) & Integration | Agglomerative clustering (Ward/Complete/Average), linkage dendrograms, PCA 2D & t-SNE manifold visualizations, unified Review 2 benchmarks & repository integration |
 
 ---
 
@@ -226,6 +236,8 @@ AI tools were **NOT** used for:
 - Replacing original student interpretation
 - Overwriting existing project tracks
 
+**AI Assistance Tool:** Google Gemini via Antigravity IDE (used strictly for scaffolding and boilerplate synthesis as permitted by guidelines Section 7.5).
+
 ---
 
 ## Navigation
@@ -233,3 +245,4 @@ AI tools were **NOT** used for:
 - [Project Root README](../README.md)
 - [Review 1 Materials](../Review1/README.md)
 - [Capstone Guidelines](../23CSE301_ML_26_27_Capstone_Guidelines.pdf)
+

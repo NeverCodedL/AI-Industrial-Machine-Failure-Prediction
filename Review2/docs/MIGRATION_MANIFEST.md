@@ -11,6 +11,7 @@
 | **Review 2 Classification Track** | `7def187` | Implementation of Part B classifiers (Random Forest, AdaBoost, Gradient Boosting, Bagging, MLP), 10-model comparison benchmark, 5-fold CV, GridSearchCV tuning, and artifact serialization. |
 | **Review 2 Clustering Track** | `bcad197`, `fba5ec0` | Implementation of K-Means clustering, multi-metric evaluation across $k \in [2, 8]$, Hierarchical clustering with linkage dendrograms, PCA 2D projections, and t-SNE non-linear embeddings. |
 | **Unified Master Pipeline** | Latest (`feature/review2-model-integration`) | Unification into `Review2/main.ipynb`, consolidated `src/utils.py`, model persistence in `models/`, and elimination of internal task-allocation files. |
+| **Person 3 Day 3 Final Integration** | `integrate-review2-person3-day3` | Integration of Person 3 Day 3 final hierarchical clustering deliverable, figure aliases (`dendrogram_final.png`, `hierarchical_pca_final.png`, `hierarchical_tsne_final.png`), verification checklists, team ownership documentation, and optional dependency disclosures. |
 
 ---
 

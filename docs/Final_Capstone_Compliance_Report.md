@@ -141,7 +141,8 @@ AI-Industrial-Machine-Failure-Prediction/ (repo_clone/)
 ```
 
 - **Mathematical Correctness Check:** Max $|Weighted\ Recall - Accuracy| = 0.000000$ (PASSED).
-- **Leakage-Free 5-Fold Stratified CV:**
+- **Leakage-Free 5-Fold Stratified CV (Top Models on Training Set):**
+  - Bagging (Decision Tree): Mean $F1 = 0.9892 \pm 0.0022$ | Mean $ROC-AUC = 0.9653 \pm 0.0128$
   - Gradient Boosting: Mean $F1 = 0.9890 \pm 0.0022$ | Mean $ROC-AUC = 0.9804 \pm 0.0125$
   - Random Forest: Mean $F1 = 0.9868 \pm 0.0028$ | Mean $ROC-AUC = 0.9811 \pm 0.0105$
 
@@ -160,9 +161,10 @@ AI-Industrial-Machine-Failure-Prediction/ (repo_clone/)
 1  Agglomerative Hierarchical  k=3, Ward Linkage, Euclidean              0.1639            1.6258               2427.0
 ```
 
-- **Elbow Analysis:** Primary geometric inflection point at $k=3$.
-- **Hierarchical Linkage:** Cophenetic correlations — Ward=0.4686, Complete=0.5395, Average=0.6525. Ward linkage achieves the highest Calinski-Harabasz compactness score and was used in the final benchmark; Average linkage achieves the highest tree fidelity and lowest Davies-Bouldin.
-- **Visualizations:** Both PCA 2D projections and non-linear t-SNE ($N=3000$) confirm operational cluster separation.
+- **Elbow Analysis:** Primary geometric inflection point at $k=3$ (Inertia drops from 36,654.2 at $k=2$ to 28,305.7 at $k=3$).
+- **$k$-Selection & Trade-Offs:** $k=3$ simultaneously maximizes Silhouette (0.2622) and Calinski–Harabasz (3,831.0). Although $k=10$ achieves a slightly lower Davies–Bouldin index (1.1652 vs 1.2437) due to granular mathematical sub-clustering, $k=3$ represents the optimal parsimonious regime that avoids partition fragmentation while isolating distinct operating modes.
+- **Hierarchical Linkage:** Cophenetic correlations — Ward=0.4686, Complete=0.5395, Average=0.6525. Ward linkage achieves the highest Calinski-Harabasz compactness score (2,427.0) and was used in the final benchmark; Average linkage achieves the highest tree fidelity (0.6525) and lowest Davies-Bouldin (0.8920).
+- **Visualizations:** Both PCA 2D projections (75.03% variance) and non-linear t-SNE ($N=3000$) confirm operational cluster separation.
 
 ---
 

@@ -112,22 +112,34 @@ Access the interactive dashboard locally at `http://localhost:8501`.
 
 ## 5. Verified Performance Benchmarks
 
-### 5.1 Regression Track — 10-Model Benchmark (`Tool wear [min]`)
-*Evaluated on held-out 20% test partition (2,000 samples). Preprocessor fitted strictly on training data.*
+### 5.1 Regression Track — Exactly 10 Required Baseline Algorithms (`Tool wear [min]`)
+*Evaluated on held-out 20% test partition (2,000 samples). Preprocessor fitted strictly on training partition.*
 
-| Rank | Model | $R^2$ Score | RMSE (min) | MAE (min) | Notes |
+| Rank | Model | $R^2$ Score | RMSE (min) | MAE (min) | Configuration / Notes |
 |:---:|---|:---:|:---:|:---:|---|
-| 1 | **Random Forest Regressor (Tuned)** | **0.0659** | **63.15** | **54.21** | Best non-linear tree regressor (`max_depth=8`) |
-| 2 | **Random Forest Regressor (Baseline)** | 0.0453 | 63.84 | 54.93 | `n_estimators=100`, `max_depth=6` |
-| 3 | **Gradient Boosting Regressor** | 0.0416 | 63.97 | 55.07 | Baseline boosting |
-| 4 | **Decision Tree Regressor** | 0.0233 | 64.58 | 55.41 | `max_depth=5` |
-| 5 | **Lasso Regression** | -0.0008 | 65.37 | 56.80 | $L_1$ regularized baseline |
-| 6 | **ElasticNet Regression** | -0.0010 | 65.37 | 56.80 | Combined $L_1 + L_2$ regularizer |
-| 7 | **Linear Regression** | -0.0016 | 65.39 | 56.82 | Standard OLS baseline |
-| 8 | **Ridge Regression (Tuned)** | -0.0015 | 65.39 | 56.82 | Regularization tuned via GridSearchCV ($\\alpha=100$) |
-| 9 | **Polynomial Regression (Deg 2)** | -0.0020 | 65.41 | 56.77 | Degree 2 polynomial feature expansion |
-| 10 | **Support Vector Regressor (SVR)** | -0.0090 | 65.63 | 56.95 | Radial basis function ($C=10.0$) |
-| 11 | **K-Nearest Neighbors Regressor** | -0.0769 | 67.81 | 57.10 | Distance-based ($k=7$) |
+| 1 | **Random Forest Regressor** | **0.0453** | **63.84** | **54.93** | Baseline ensemble (`n_estimators=100`, `max_depth=6`) |
+| 2 | **Gradient Boosting Regressor** | 0.0416 | 63.97 | 55.07 | Baseline boosting (`n_estimators=100`, `max_depth=3`) |
+| 3 | **Decision Tree Regressor** | 0.0233 | 64.58 | 55.41 | Single decision tree baseline (`max_depth=5`) |
+| 4 | **Lasso Regression** | -0.0008 | 65.37 | 56.80 | $L_1$ regularized baseline ($\alpha=0.1$) |
+| 5 | **ElasticNet Regression** | -0.0010 | 65.37 | 56.80 | Combined $L_1 + L_2$ regularizer ($\alpha=0.1, l_1=0.5$) |
+| 6 | **Linear Regression** | -0.0016 | 65.39 | 56.82 | Standard ordinary least squares baseline |
+| 7 | **Ridge Regression** | -0.0016 | 65.39 | 56.82 | $L_2$ regularized baseline ($\alpha=1.0$) |
+| 8 | **Polynomial Regression (Deg 2)** | -0.0020 | 65.41 | 56.77 | Degree 2 polynomial feature expansion |
+| 9 | **Support Vector Regressor (SVR)** | -0.0090 | 65.63 | 56.95 | Radial basis function ($C=10.0, \text{kernel='rbf'}$) |
+| 10 | **K-Nearest Neighbors Regressor** | -0.0769 | 67.81 | 57.10 | Distance-based regressor ($k=7$) |
+
+#### 5.1.1 Hyperparameter Tuning & Cross-Validation (`Tool wear [min]`)
+
+**A. Hyperparameter Tuning via GridSearchCV:**
+| Model | Baseline $R^2$ | Tuned $R^2$ | Best Parameters | $R^2$ Improvement | Tuned RMSE | Tuned MAE |
+|---|:---:|:---:|---|:---:|:---:|:---:|
+| **Random Forest Regressor** | 0.0453 | **0.0659** | `{'n_estimators': 100, 'max_depth': 8, 'min_samples_split': 5}` | **+0.0206** | **63.15 min** | **54.21 min** |
+| **Ridge Regression** | -0.0016 | -0.0015 | `{'alpha': 100.0}` | +0.0001 | 65.39 min | 56.82 min |
+
+**B. 5-Fold Leakage-Free Cross-Validation (Top 2 Baseline Models on Training Data):**
+*Evaluated on 8,000 training samples via `Pipeline([('preprocessor', preprocessor_reg), ('reg', model)])` to guarantee fold-level preprocessing isolation:*
+- **Random Forest Regressor:** Fold $R^2 = [0.0322, 0.0416, 0.0413, 0.0477, 0.0438]$ → **Mean $R^2 = 0.0413 \pm 0.0051$**
+- **Gradient Boosting Regressor:** Fold $R^2 = [0.0289, 0.0400, 0.0488, 0.0425, 0.0476]$ → **Mean $R^2 = 0.0416 \pm 0.0071$**
 
 > **Viva Note on Tool Wear Mechanics:** In the AI4I 2020 dataset, tool wear accumulates continuously across workpiece cutting operations rather than exhibiting a linear relationship with instantaneous spindle speed or temperature. Non-linear tree ensembles capture empirical stress interactions significantly better than linear models. (Contrast: When modeling `Process temperature [K]`, thermodynamic equilibrium yields $R^2 \ge 0.90$).
 
@@ -151,19 +163,44 @@ Access the interactive dashboard locally at `http://localhost:8501`.
 
 *Mathematical Check:* Single-label Weighted Recall identically equals Accuracy across all 10 models ($|Recall - Accuracy| = 0.0000$).
 
+#### 5.2.1 5-Fold Stratified Cross-Validation & Hyperparameter Tuning
+
+**A. 5-Fold Stratified Cross-Validation on Training Set ($N=8{,}000$):**
+*Evaluated via `Pipeline([('preprocessor', preprocessor), ('clf', model)])` to eliminate preprocessing leakage:*
+| Model | Selection Basis | Mean CV F1 | Std CV F1 | Mean CV ROC-AUC | Std CV ROC-AUC |
+|---|---|:---:|:---:|:---:|:---:|
+| **Bagging (Decision Tree)** | Rank 1 Baseline Weighted F1 | 0.9892 | ±0.0022 | 0.9653 | ±0.0128 |
+| **Gradient Boosting** | Rank 2 Baseline Weighted F1 | **0.9890** | ±0.0022 | **0.9804** | ±0.0125 |
+| **Random Forest** | Rank 3 Baseline Weighted F1 | 0.9868 | ±0.0028 | 0.9811 | ±0.0105 |
+
+*Tuning Candidate Justification:* While Bagging achieves marginally higher baseline F1 (0.9917 vs 0.9906), Gradient Boosting demonstrates superior probability calibration and discrimination (Mean CV ROC-AUC = 0.9804 vs 0.9653) and higher failure-class recall, making it the most suitable candidate for hyperparameter optimization.
+
+**B. Hyperparameter Tuning (Gradient Boosting via GridSearchCV):**
+- **Optimal Hyperparameters:** `{'clf__learning_rate': 0.05, 'clf__max_depth': 4, 'clf__n_estimators': 100, 'clf__subsample': 1.0}`
+- **Best 5-Fold CV Weighted F1:** **0.9894** (vs 0.9890 baseline)
+- **Held-Out Test Set Performance:** **Accuracy: 0.9925**, **Weighted F1: 0.9922**, **ROC-AUC: 0.9777**, **Failure Recall: 80.88%** (55/68 failure events detected), **Failure F1: 0.8800**.
+
 ---
 
 ### 5.3 Clustering Track — Unsupervised Operational Benchmark
-*Trained strictly on standardized operational telemetry features (no labels, zero data leakage).*
+*Trained strictly on standardized operational telemetry features ($N=10{,}000$, zero data leakage).*
 
+#### 5.3.1 Consolidated Operational Benchmark Table
 | Algorithm | Configuration | Silhouette Score ↑ | Davies–Bouldin Index ↓ | Calinski–Harabasz Index ↑ |
 |---|---|:---:|:---:|:---:|
 | **K-Means Clustering** | $k=3$, `k-means++`, 10 inits | **0.2622** | **1.2437** | **3,831.0** |
 | **Agglomerative Hierarchical** | $k=3$, Ward Linkage, Euclidean | 0.1639 | 1.6258 | 2,427.0 |
 
-- **Elbow Analysis:** Inertia curve evaluated for $k \in [2, 10]$ clearly exhibits the primary inflection point at $k=3$.
-- **Hierarchical Dendrograms:** Evaluated across Ward, Complete, and Average linkages. Cophenetic correlations: Ward=0.4686, Complete=0.5395, Average=0.6525 (Average linkage has the highest tree fidelity; Ward was selected for the final benchmark due to its higher Calinski-Harabasz compactness score).
-- **Manifold Learning:** Validated via 2D PCA linear projection and non-linear t-SNE manifold learning ($N=3000$, `perplexity=30`).
+#### 5.3.2 Hierarchical Linkage Comparison ($k=3$)
+| Linkage Method | Silhouette Score ↑ | Davies–Bouldin Index ↓ | Calinski–Harabasz Index ↑ | Cophenetic Correlation ↑ | Selection Assessment |
+|---|:---:|:---:|:---:|:---:|---|
+| **Ward** | 0.1639 | 1.6258 | **2,427.0** | 0.4686 | **Selected for Benchmark:** Maximizes cluster compactness and partition balance |
+| **Average** | **0.2831** | **0.8920** | 513.4 | **0.6525** | Highest dendrogram tree fidelity and Silhouette score |
+| **Complete** | 0.1984 | 1.3788 | 1,424.4 | 0.5395 | Intermediate maximum-distance linkage |
+
+#### 5.3.3 $k$-Selection & Multi-Metric Trade-Offs
+- **K-Means $k$-Selection:** $k=3$ simultaneously maximizes Silhouette Score (0.2622) and Calinski–Harabasz Index (3,831.0) while marking the primary geometric Elbow inflection point where Inertia drops from 36,654.2 ($k=2$) to 28,305.7 ($k=3$). Although higher $k$ ($k=10$) produces a slightly lower Davies–Bouldin index (1.1652 vs 1.2437) due to granular sub-clustering, $k=3$ represents the optimal parsimonious regime that avoids artificial fragmentation while isolating distinct operating modes.
+- **Manifold Learning Validation:** Verified through 2D PCA linear projection (PC1: 38.21%, PC2: 36.82%, 75.03% total variance) and non-linear t-SNE manifold embeddings ($N=3{,}000$, `perplexity=30`, `random_state=42`).
 
 ---
 

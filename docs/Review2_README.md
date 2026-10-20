@@ -162,12 +162,15 @@ Evaluated on the identical 80:20 stratified test split ($N_{\text{test}} = 2{,}0
 
 ### 2. 5-Fold Stratified Cross-Validation (Training Partition)
 
-Evaluated on the top 2 supervised classifiers using leakage-free `Pipeline` (preprocessor inside CV loop):
+Evaluated on the top-performing classifiers using a leakage-free `Pipeline` (`preprocessor` inside CV loop, $N=8{,}000$):
 
-| Model | CV Mean F1 (Weighted) | CV F1 Std | CV Mean ROC-AUC | CV ROC-AUC Std |
-|---|:---:|:---:|:---:|:---:|
-| **Gradient Boosting** | **0.9890** | ± 0.0022 | 0.9804 | ± 0.0125 |
-| **Random Forest** | 0.9868 | ± 0.0028 | **0.9811** | ± 0.0105 |
+| Model | Selection Basis | CV Mean F1 (Weighted) | CV F1 Std | CV Mean ROC-AUC | CV ROC-AUC Std |
+|---|---|:---:|:---:|:---:|:---:|
+| **Bagging (Decision Tree)** | Rank 1 Baseline Weighted F1 | 0.9892 | ± 0.0022 | 0.9653 | ± 0.0128 |
+| **Gradient Boosting** | Rank 2 Baseline Weighted F1 | **0.9890** | ± 0.0022 | **0.9804** | ± 0.0125 |
+| **Random Forest** | Rank 3 Baseline Weighted F1 | 0.9868 | ± 0.0028 | 0.9811 | ± 0.0105 |
+
+*Tuning Selection Rationale:* Although Bagging achieves slightly higher baseline F1 (0.9917 vs 0.9906), Gradient Boosting demonstrates significantly stronger ROC-AUC discrimination (0.9804 vs 0.9653 in CV; 0.9756 vs 0.9640 on test) and superior probability calibration, making it the preferred candidate for hyperparameter optimization via GridSearchCV.
 
 ### 3. Hyperparameter Tuning (GridSearchCV) & Model Serialization
 
@@ -208,7 +211,7 @@ Ground-truth failure labels were **not used** to fit any clustering model. They 
 | 9 | 15,481.9 | 0.2149 | 1.2161 | 2,784.5 |
 | 10 | 14,507.2 | 0.2201 | 1.1652 | 2,715.7 |
 
-$k=3$ maximizes both Silhouette and Calinski-Harabasz and minimizes Davies-Bouldin among all evaluated $k$, justifying its selection.
+$k=3$ simultaneously maximizes Silhouette (0.2622) and Calinski–Harabasz (3,831.0) while marking the primary geometric Elbow inflection point where Inertia drops significantly from $k=2$ (36,654.2) to $k=3$ (28,305.7). Although higher $k$ ($k=10$) produces a slightly lower Davies–Bouldin index (1.1652 vs 1.2437) due to granular mathematical sub-clustering, $k=3$ represents the optimal parsimonious regime that avoids artificial partition fragmentation while isolating distinct physical operating modes.
 
 **Agglomerative Hierarchical Clustering: Linkage Comparison ($k=3$, full dataset)**
 

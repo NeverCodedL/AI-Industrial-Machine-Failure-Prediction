@@ -169,9 +169,13 @@ st.subheader("📊 Diagnostic Prediction & Failure Risk Assessment")
 if pipeline is not None:
     try:
         prediction = pipeline.predict(input_df)[0]
-        prob = pipeline.predict_proba(input_df)[0]
-        fail_prob = prob[1] * 100.0
-        norm_prob = prob[0] * 100.0
+        if hasattr(pipeline, "predict_proba"):
+            prob = pipeline.predict_proba(input_df)[0]
+            fail_prob = float(prob[1] * 100.0)
+            norm_prob = float(prob[0] * 100.0)
+        else:
+            fail_prob = 100.0 if prediction == 1 else 0.0
+            norm_prob = 100.0 - fail_prob
 
         res_col1, res_col2 = st.columns([1, 1.2])
 
@@ -211,8 +215,8 @@ else:
 st.markdown("---")
 st.markdown("### 📘 Model & Pipeline Context")
 st.markdown("""
-- **Classifier Architecture:** Gradient Boosting Classifier with GridSearchCV Hyperparameter Optimization
+- **Classifier Architecture:** Tuned Gradient Boosting Classifier (`learning_rate=0.05, max_depth=4, n_estimators=100`) via GridSearchCV
 - **Preprocessing:** Scikit-Learn `ColumnTransformer` with `StandardScaler` (numerical) and `OneHotEncoder` (categorical `Type`)
 - **Leakage Prevention:** Diagnostic flags (`TWF`, `HDF`, `PWF`, `OSF`, `RNF`) strictly excluded from model features
-- **Benchmark F1-Score:** 0.9850 on held-out test split
+- **Benchmark Performance (Tuned Gradient Boosting):** Weighted F1-Score = 0.9922 · Test Accuracy = 99.25% · Failure Recall = 80.88% (on held-out test split)
 """)

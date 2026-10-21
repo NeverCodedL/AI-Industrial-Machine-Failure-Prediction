@@ -133,8 +133,8 @@ Access the interactive dashboard locally at `http://localhost:8501`.
 **A. Hyperparameter Tuning via GridSearchCV:**
 | Model | Baseline $R^2$ | Tuned $R^2$ | Best Parameters | $R^2$ Improvement | Tuned RMSE | Tuned MAE |
 |---|:---:|:---:|---|:---:|:---:|:---:|
-| **Random Forest Regressor** | 0.0453 | **0.0659** | `{'n_estimators': 100, 'max_depth': 8, 'min_samples_split': 5}` | **+0.0206** | **63.15 min** | **54.21 min** |
-| **Ridge Regression** | -0.0016 | -0.0015 | `{'alpha': 100.0}` | +0.0001 | 65.39 min | 56.82 min |
+| **Random Forest Regressor** | 0.0453 | **0.0658** | `{'reg__max_depth': 8, 'reg__min_samples_split': 2, 'reg__n_estimators': 100}` | **+0.0205** | **63.15 min** | **54.21 min** |
+| **Ridge Regression** | -0.0016 | -0.0015 | `{'reg__alpha': 100.0}` | +0.0001 | 65.39 min | 56.82 min |
 
 **B. 5-Fold Leakage-Free Cross-Validation (Top 2 Baseline Models on Training Data):**
 *Evaluated on 8,000 training samples via `Pipeline([('preprocessor', preprocessor_reg), ('reg', model)])` to guarantee fold-level preprocessing isolation:*

@@ -68,27 +68,28 @@ AI-Industrial-Machine-Failure-Prediction/ (repo_clone/)
 
 ## 3. Mandatory Rubric Compliance Mapping
 
-| Rubric Section | Item | Requirement | Status | Notebook & Section Implementing Deliverable |
-|---|---|---|:---:|---|
-| **Review 1 EDA** | **A1** | Dataset Loading & Audit | **PASS** | `regression.ipynb` (Sections 4 & 5): Shape, dtypes, nulls, target breakdown. |
-| | **A2** | EDA Visualisations | **PASS** | `regression.ipynb` (Section 6): 9 distribution plots, correlation heatmap, scatter plots. |
-| | **A3** | Insight Commentary | **PASS** | `regression.ipynb` (Section 6): Markdown observation commentary below each graph. |
-| **Review 1 Preproc** | **B1** | Data Cleaning | **PASS** | `regression.ipynb` (Section 7): Missing values audit, duplicate audit, outlier treatment. |
-| | **B2** | Encoding, Scaling & Split | **PASS** | `regression.ipynb` (Sections 12 & 13): OneHotEncoder, StandardScaler fitted strictly on train. |
-| | **B3** | Feature Engineering | **PASS** | `regression.ipynb` (Section 9): `Temp_Difference`, `Power_kW`, `Mechanical_Stress`. |
-| **Review 1 Regression**| **C1** | 10 Regression Algorithms | **PASS** | `regression.ipynb` (Section 14 & 15): All 10 models trained and evaluated. |
-| | **C2** | Comparison Table | **PASS** | `regression.ipynb` (Section 15): Single table sorted by $R^2$ with RMSE and MAE. |
-| | **C3** | Hyperparameter Tuning | **PASS** | `regression.ipynb` (Section 26): `GridSearchCV` on Ridge and Random Forest. |
-| | **C4** | Visualisations | **PASS** | `regression.ipynb` (Sections 27–30): Residuals, Predicted vs Actual, Feature Importance, 5-fold CV. |
-| **Review 1 Classif** | **D1-D2**| 5 Classifiers (Part A) | **PASS** | `classification.ipynb` (Section 6): Logistic Reg, KNN, GaussianNB, DT, SVC. |
-| **Review 2 Classif** | **A1** | 5 Classifiers (Part B) | **PASS** | `classification.ipynb` (Section 6): Random Forest, AdaBoost, Gradient Boosting, Bagging, MLP. |
-| | **A2** | Consolidated 10 Table | **PASS** | `classification.ipynb` (Section 7): 10 models compared dynamically on Acc, Prec, Rec, F1, AUC. |
-| | **A3** | Tuning & Leakage-Free CV | **PASS** | `classification.ipynb` (Sections 9 & 10): `Pipeline` embedding scaler; `GridSearchCV` on GB. |
-| **Review 2 Clustering**| **B1** | K-Means & Hierarchical | **PASS** | `clustering.ipynb` (Sections 3 & 5): Both algorithms fitted; cluster labels generated. |
-| | **B2** | Evaluation Metrics & Elbow | **PASS** | `clustering.ipynb` (Section 3 & 5): Silhouette, DB, CH for $k \in [2, 10]$; Ward/Complete/Avg dendrograms. |
-| | **B3** | Cluster Visualisation | **PASS** | `clustering.ipynb` (Sections 6 & 7): PCA 2D projections for both algorithms; t-SNE 2D manifold. |
-| **Pipeline Quality** | **C1-C3**| Clean Code & Documentation| **PASS** | All 3 notebooks run with 0 errors; master README, requirements.txt, and clean Git state. |
-| **Review 2 Bonus** | **Bonus**| Interactive GUI | **PASS** | `app/app.py`: Streamlit real-time diagnostic dashboard (+2 marks). |
+| Requirement | Category | Status | Evidence | Remaining Issue |
+|---|---|:---:|---|---|
+| **A1 Dataset loading & audit** | EDA & Preprocessing | **PASS** | `regression.ipynb` (Sections 4 & 5): Shape (10,000 × 14), dtypes, 0 nulls, class balance audit. | None |
+| **A2 EDA visualisations** | EDA & Preprocessing | **PASS** | `regression.ipynb` (Section 6): Feature distributions, target distribution, correlation heatmap, 2+ scatter plots. | None |
+| **A3 Insight commentary** | EDA & Preprocessing | **PASS** | `regression.ipynb` (Section 6): Markdown analytical observations for every visualization. | None |
+| **B1 Data cleaning** | EDA & Preprocessing | **PASS** | `regression.ipynb` (Section 7): Missing value strategy, duplicate row audit, IQR outlier documentation. | None |
+| **B2 Encoding, scaling & split** | EDA & Preprocessing | **PASS** | `regression.ipynb` (Sections 11–13): 80:20 split; StandardScaler & OneHotEncoder fitted strictly on train. | None |
+| **B3 Feature engineering** | EDA & Preprocessing | **PASS** | `regression.ipynb` (Section 9): `Temp_Difference`, `Power_kW`, `Mechanical_Stress` with physical rationale. | None |
+| **C1 10 Regression algorithms** | Regression Track | **PASS** | `regression.ipynb` (Section 14 & 15): All 10 models trained and evaluated on identical test split. | None |
+| **C2 Regression comparison table** | Regression Track | **PASS** | `regression.ipynb` (Section 15): Consolidated table reporting $R^2$, RMSE, MAE, ranked by $R^2$. | None |
+| **C3 Regression hyperparameter tuning**| Regression Track | **PASS** | `regression.ipynb` (Section 26): Leakage-free `Pipeline` `GridSearchCV` on Ridge and Random Forest. | None |
+| **C4 Regression 5-fold CV & plots** | Regression Track | **PASS** | `regression.ipynb` (Sections 27–30): 5-fold CV on top 2 models; Residuals, Pred-vs-Actual, Feature Importance. | None |
+| **D1-D2 Review 1 Classification (Part A)**| Classification Track | **PASS** | `classification.ipynb` (Section 6): Logistic Regression, KNN, GaussianNB, Decision Tree, SVC evaluated. | None |
+| **A1 Review 2 Classification (Part B)**| Classification Track | **PASS** | `classification.ipynb` (Section 6): Random Forest, AdaBoost, Gradient Boosting, Bagging, MLP evaluated. | None |
+| **A2 Consolidated 10-classifier table**| Classification Track | **PASS** | `classification.ipynb` (Section 7): Consolidated table across all 10 models with Acc, Prec, Rec, F1, ROC-AUC. | None |
+| **A3 Classification tuning & CV** | Classification Track | **PASS** | `classification.ipynb` (Sections 9 & 10): Leakage-free 5-fold CV on top 2 models; `GridSearchCV` tuning of GB. | None |
+| **B1 2 Clustering algorithms** | Clustering Track | **PASS** | `clustering.ipynb` (Sections 3 & 5): K-Means ($k \in [2, 10]$) and Agglomerative Hierarchical fitted. | None |
+| **B2 Clustering evaluation metrics** | Clustering Track | **PASS** | `clustering.ipynb` (Sections 3 & 5): Silhouette, Davies–Bouldin, Calinski–Harabasz; Elbow curve & Dendrograms. | None |
+| **B3 Cluster visualisations** | Clustering Track | **PASS** | `clustering.ipynb` (Sections 6 & 7): PCA 2D projections for both algorithms; t-SNE 2D non-linear manifold. | None |
+| **Zero target leakage guardrails** | Across Tracks | **PASS** | All tracks: failure flags (`TWF`, `HDF`, `PWF`, `OSF`, `RNF`, `UDI`, `Product ID`) strictly excluded. | None |
+| **C1-C3 Pipeline & documentation quality**| Code Quality | **PASS** | Clean top-to-bottom run (0 errors); master README, pinned `requirements.txt`, clean Git history. | None |
+| **Review 2 Bonus Deliverables** | Bonus Opportunities | **PASS** | `app/app.py`: Interactive Streamlit dashboard with presets and real-time telemetry prediction. | None |
 
 ---
 
@@ -113,9 +114,9 @@ AI-Industrial-Machine-Failure-Prediction/ (repo_clone/)
 9   K-Nearest Neighbors Regressor -0.0769  67.8071  57.0971
 ```
 
-### Hyperparameter Tuning Summary
-- **Ridge Regression:** Baseline $R^2 = -0.0016$ $\rightarrow$ Tuned $R^2 = -0.0015$ ($\alpha = 100.0$)
-- **Random Forest Regressor:** Baseline $R^2 = 0.0453$ $\rightarrow$ Tuned $R^2 = 0.0659$ (`max_depth=8`, `min_samples_split=5`, `n_estimators=100`, $+0.0206$ improvement)
+### Hyperparameter Tuning Summary (Leakage-Free via Pipeline GridSearchCV)
+- **Ridge Regression:** Baseline $R^2 = -0.0016$ $\rightarrow$ Tuned $R^2 = -0.0015$ (`{'reg__alpha': 100.0}`, $+0.0001$ improvement)
+- **Random Forest Regressor:** Baseline $R^2 = 0.0453$ $\rightarrow$ Tuned $R^2 = 0.0658$ (`{'reg__max_depth': 8, 'reg__min_samples_split': 2, 'reg__n_estimators': 100}`, $+0.0205$ improvement)
 
 ---
 

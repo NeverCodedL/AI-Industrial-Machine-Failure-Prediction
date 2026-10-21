@@ -171,8 +171,11 @@ if pipeline is not None:
         prediction = pipeline.predict(input_df)[0]
         if hasattr(pipeline, "predict_proba"):
             prob = pipeline.predict_proba(input_df)[0]
-            fail_prob = float(prob[1] * 100.0)
-            norm_prob = float(prob[0] * 100.0)
+            classes_list = list(pipeline.classes_)
+            pos_idx = classes_list.index(1) if 1 in classes_list else 1
+            neg_idx = classes_list.index(0) if 0 in classes_list else 0
+            fail_prob = float(prob[pos_idx] * 100.0)
+            norm_prob = float(prob[neg_idx] * 100.0)
         else:
             fail_prob = 100.0 if prediction == 1 else 0.0
             norm_prob = 100.0 - fail_prob
@@ -198,6 +201,8 @@ if pipeline is not None:
                     <p><b>Action Required:</b> Continue standard operating telemetry logging.</p>
                 </div>
                 """, unsafe_allow_html=True)
+
+            st.caption("ℹ️ *Operational Policy Note:* The 40.0% failure threshold is an application-level operational risk threshold chosen to maximize proactive failure detection and minimize unplanned downtime, rather than a universal physical constant.")
 
         with res_col2:
             st.write("#### Failure Risk Probability Gauge")
